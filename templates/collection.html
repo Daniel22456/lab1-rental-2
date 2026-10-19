@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Список аренды{% endblock %}
+{% block content %}
+    <h1>Список аренды — {{ wm }}</h1>
+
+    {% if summary.count %}
+    <p>Отметьте одну или несколько позиций в таблице, чтобы изменить срок аренды или убрать их из списка.</p>
+    <form method="post" action="{{ url_for('collection_update') }}">
+      <table>
+        <caption>Снаряжение, выбранное для аренды</caption>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2">Категория</th>
+            <th scope="col" rowspan="2">Наименование</th>
+            <th scope="col" rowspan="2">Срок аренды, дней</th>
+            <th scope="colgroup" colspan="2">Цена аренды, ₽</th>
+            <th scope="col" rowspan="2">Залоговая стоимость, ₽</th>
+          </tr>
+          <tr>
+            <th scope="col">за сутки</th>
+            <th scope="col">за весь срок</th>
+          </tr>
+        </thead>
+        {%- for group in groups %}
+        <tbody>
+          {%- for r in group.rows %}
+          <tr>
+            {%- if loop.first %}
+            <th scope="rowgroup" rowspan="{{ group.rows|length }}">{{ group.name }}</th>
+            {%- endif %}
+            <td><input type="checkbox" id="item-{{ r.id }}" name="item_id" value="{{ r.id }}"> <label for="item-{{ r.id }}">{{ r.name }}</label></td>
+            <td>{{ r.days }}</td>
+            <td>{{ r.price_per_day|money }}</td>
+            <td>{{ r.cost|money }}</td>
+            <td>{{ r.deposit|money }}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+        {%- endfor %}
+        <tfoot>
+          <tr>
+            <th scope="row" colspan="4">Итого</th>
+            <td>{{ summary.rent|money }}</td>
+            <td>{{ summary.deposit|money }}</td>
+          </tr>
+          <tr>
+            <th scope="row" colspan="4">Сумма к оплате при получении (аренда + залог)</th>
+            <td colspan="2"><strong>{{ (summary.rent + summary.deposit)|money }}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <fieldset>
+        <legend>Действия с отмеченными позициями</legend>
+        <p>
+          <label for="new-days">Новый срок аренды, дней:</label>
+          <input type="number" id="new-days" name="days" min="1" max="30" value="5">
+          <button type="submit" name="action" value="set_days">Изменить срок</button>
+        </p>
+        <p>
+          <button type="submit" name="action" value="remove" formnovalidate>Убрать отмеченные из списка</button>
+          <button type="submit" name="action" value="clear" formnovalidate>Очистить весь список</button>
+        </p>
+      </fieldset>
+    </form>
+
+    <p><a href="{{ url_for('checkout') }}">Перейти к оформлению договора аренды</a></p>
+
+    <aside>
+      <h2>Как рассчитывается стоимость</h2>
+      <ul>
+        <li>Стоимость аренды позиции = цена за сутки × срок аренды в днях.</li>
+        <li>Залог вносится один раз при получении и возвращается после сдачи снаряжения без повреждений.</li>
+      </ul>
+    </aside>
+    {% else %}
+    <p>Список аренды пуст. Выберите снаряжение в <a href="{{ url_for('catalog') }}">каталоге</a>.</p>
+    {% endif %}
+{% endblock %}
