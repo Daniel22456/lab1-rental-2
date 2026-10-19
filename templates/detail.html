@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ item.name }}{% endblock %}
+{% block description %}{{ item.description|first_sentence }}{% endblock %}
+{% block content %}
+    <nav aria-label="Навигационная цепочка">
+      <ol>
+        <li><a href="{{ url_for('index') }}">Главная</a></li>
+        <li><a href="{{ url_for('catalog') }}">Каталог</a></li>
+        <li><a href="{{ url_for('catalog', category=item.category_id) }}">{{ item.category }}</a></li>
+        <li>{{ item.name }}</li>
+      </ol>
+    </nav>
+
+    <article>
+      <h1>{{ item.name }} — {{ wm }}</h1>
+
+      <figure>
+        <img src="{{ item.image|image_src }}" alt="{{ item.image_alt }}" width="480">
+        <figcaption>{{ item.name }}: внешний вид</figcaption>
+      </figure>
+
+      <section>
+        <h2>Описание</h2>
+        {%- for paragraph in paragraphs %}
+        <p>{{ paragraph }}</p>
+        {%- endfor %}
+      </section>
+
+      {% if specs %}
+      <section>
+        <h2>Характеристики</h2>
+        <dl>
+          {%- for name, value in specs %}
+          <dt>{{ name }}</dt>
+          <dd>{{ value }}</dd>
+          {%- endfor %}
+        </dl>
+      </section>
+      {% endif %}
+
+      <section>
+        <h2>Стоимость аренды</h2>
+        <ul>
+          <li>Цена аренды: {{ item.price_per_day|money }} ₽ в сутки</li>
+          <li>Залоговая стоимость: {{ item.deposit|money }} ₽ (возвращается после сдачи снаряжения)</li>
+          <li>Пример: аренда на 3 дня — {{ (item.price_per_day * 3)|money }} ₽ и залог {{ item.deposit|money }} ₽</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Добавить в список аренды</h2>
+        {% if in_list %}
+        <p>Это снаряжение уже есть в списке аренды на {{ in_list.days }} {{ in_list.days|plural('день', 'дня', 'дней') }}. Новый срок заменит прежний.</p>
+        {% endif %}
+        <form method="post" action="{{ url_for('collection_add') }}">
+          <input type="hidden" name="equipment_id" value="{{ item.id }}">
+          <p>
+            <label for="detail-days">Срок аренды, дней:</label>
+            <input type="number" id="detail-days" name="days" min="1" max="30" value="{{ in_list.days if in_list else 3 }}" required>
+            <button type="submit">Добавить в список аренды</button>
+          </p>
+        </form>
+      </section>
+    </article>
+
+    {% if related %}
+    <aside>
+      <h2>Другое снаряжение в категории «{{ item.category }}»</h2>
+      <ul>
+        {%- for r in related %}
+        <li><a href="{{ url_for('detail', id=r.id) }}">{{ r.name }}</a> — {{ r.price_per_day|money }} ₽ в сутки</li>
+        {%- endfor %}
+      </ul>
+    </aside>
+    {% endif %}
+{% endblock %}

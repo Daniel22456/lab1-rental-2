@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Каталог снаряжения{% endblock %}
+{% block content %}
+    <h1>Каталог снаряжения — {{ wm }}</h1>
+
+    <form method="get" action="{{ url_for('catalog') }}">
+      <p>
+        <label for="category-filter">Показать категорию:</label>
+        <select id="category-filter" name="category">
+          <option value="">Все категории</option>
+          {%- for c in categories %}
+          <option value="{{ c.id }}"{% if c.id == selected %} selected{% endif %}>{{ c.name }}</option>
+          {%- endfor %}
+        </select>
+        <button type="submit">Показать</button>
+      </p>
+    </form>
+
+    {% if groups %}
+    <p>Отметьте одну или несколько позиций, укажите срок аренды внизу страницы и нажмите «Добавить в список аренды».</p>
+    <form method="post" action="{{ url_for('collection_add') }}">
+      {%- for group in groups %}
+      <section>
+        <h2>{{ group.name }}</h2>
+        {%- for item in group.rows %}
+        <article>
+          <h3><a href="{{ url_for('detail', id=item.id) }}">{{ item.name }}</a></h3>
+          <img src="{{ item.image|image_src }}" alt="{{ item.image_alt }}" width="240">
+          <p>{{ item.description|first_sentence }}</p>
+          <ul>
+            <li>Цена аренды: {{ item.price_per_day|money }} ₽ в сутки</li>
+            <li>Залоговая стоимость: {{ item.deposit|money }} ₽</li>
+          </ul>
+          <p>
+            <input type="checkbox" id="pick-{{ item.id }}" name="equipment_id" value="{{ item.id }}">
+            <label for="pick-{{ item.id }}">Выбрать: {{ item.name }}</label>
+            {%- if item.id in in_list %} (уже в списке аренды){% endif %}
+          </p>
+          <p><a href="{{ url_for('detail', id=item.id) }}">Подробнее о снаряжении</a></p>
+        </article>
+        {%- endfor %}
+      </section>
+      {%- endfor %}
+
+      <fieldset>
+        <legend>Добавить отмеченное снаряжение в список аренды</legend>
+        <p>
+          <label for="days">Срок аренды, дней:</label>
+          <input type="number" id="days" name="days" min="1" max="30" value="3" required>
+        </p>
+        <p><button type="submit">Добавить в список аренды</button></p>
+      </fieldset>
+    </form>
+    {% else %}
+    <p>В этой категории пока нет снаряжения.</p>
+    {% endif %}
+
+    <aside>
+      <h2>Условия аренды</h2>
+      <ul>
+        <li>Стоимость аренды = цена за сутки × количество суток.</li>
+        <li>Залог вносится при получении и возвращается после сдачи снаряжения.</li>
+        <li>Если позиция уже есть в списке аренды, новый срок заменит прежний.</li>
+      </ul>
+    </aside>
+{% endblock %}
