@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="{{ author }}">
+  <meta name="description" content="{% block description %}Прокат туристического снаряжения «Привал»: палатки, рюкзаки, спальные мешки и походное оборудование в аренду{% endblock %}">
+  <title>{% block title %}{% endblock %} — прокат «Привал» | СДР</title>
+</head>
+<body>
+  <header>
+    <p>
+      <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Логотип проката «Привал»: оранжевая палатка у подножия гор в зелёном круге" width="64" height="64"></a>
+      <strong>«Привал»</strong> — прокат туристического снаряжения
+    </p>
+    <nav aria-label="Основная навигация">
+      <ul>
+        {%- for endpoint, title in nav %}
+        <li><a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} aria-current="page"{% endif %}>{{ title }}{% if endpoint == 'collection' %} ({{ rental_count }}){% endif %}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {%- with messages = get_flashed_messages() %}
+    {%- for message in messages %}
+    <p role="status"><strong>{{ message }}</strong></p>
+    {%- endfor %}
+    {%- endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <address>
+      Телефон: <a href="tel:+73470000000">+7 (347) 000-00-00</a><br>
+      Электронная почта: <a href="mailto:info@privaltour.example">info@privaltour.example</a>
+    </address>
+    <p>Пункты проката работают ежедневно с 9:00 до 20:00.</p>
+    <p><a href="{{ url_for('credits') }}">Источники изображений</a></p>
+    <p><small>© 2026 Прокат «Привал». Учебный проект. Разработчик: {{ author }} ({{ wm }}).</small></p>
+  </footer>
+</body>
+</html>
