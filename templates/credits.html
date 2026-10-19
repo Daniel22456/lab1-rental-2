@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Источники изображений{% endblock %}
+{% block content %}
+    <h1>Источники изображений — {{ wm }}</h1>
+
+    {% if credits %}
+    <p>Фотографии снаряжения взяты с Wikimedia Commons и используются по свободным лицензиям, указанным в таблице.</p>
+    <table>
+      <caption>Фотографии на сайте</caption>
+      <thead>
+        <tr>
+          <th scope="col">Где используется</th>
+          <th scope="col">Файл на Wikimedia Commons</th>
+          <th scope="col">Автор</th>
+          <th scope="col">Лицензия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for c in credits %}
+        <tr>
+          <td>{{ c.label }}</td>
+          <td><a href="{{ c.source_url }}">{{ c.title }}</a></td>
+          <td>{{ c.author }}</td>
+          <td>{% if c.license_url %}<a href="{{ c.license_url }}">{{ c.license }}</a>{% else %}{{ c.license }}{% endif %}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>Фотографии с Wikimedia Commons ещё не скачаны, поэтому для части позиций показаны рисунки. Чтобы загрузить фотографии, выполните в папке проекта команду <code>python3 download_photos.py</code>.</p>
+    {% endif %}
+
+    <p>Фотографии палатки «Ветер-3», рюкзака «Штурм 50», спального мешка «Зима −20», газовой горелки с котелком и бутыли для воды подобраны автором сайта в открытых источниках (карточки товаров интернет-магазинов).</p>
+    <p>Рисунки в формате SVG и логотип выполнены автором сайта.</p>
+{% endblock %}
