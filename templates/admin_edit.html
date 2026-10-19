@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Изменение записи' if item else 'Новая запись' }}{% endblock %}
+{% block content %}
+    <h1>{{ 'Изменение снаряжения' if item else 'Добавление снаряжения' }} — {{ wm }}</h1>
+    <p><a href="{{ url_for('admin') }}">Вернуться к управлению базой данных</a></p>
+
+    {% if errors %}
+    <section>
+      <h2>Проверьте данные формы</h2>
+      <ul>
+        {%- for error in errors %}
+        <li>{{ error }}</li>
+        {%- endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('admin_edit', id=item.id) if item else url_for('admin_edit') }}">
+      <fieldset>
+        <legend>Основные сведения</legend>
+        <p>
+          <label for="name">Наименование:</label><br>
+          <input type="text" id="name" name="name" value="{{ data.name }}" required minlength="3" maxlength="100" size="60">
+        </p>
+        <p>
+          <label for="category">Категория:</label><br>
+          <select id="category" name="category_id" required>
+            <option value="">— выберите категорию —</option>
+            {%- for c in categories %}
+            <option value="{{ c.id }}"{% if data.category_id == c.id|string %} selected{% endif %}>{{ c.name }}</option>
+            {%- endfor %}
+          </select>
+        </p>
+        <p>
+          <label for="price">Цена аренды, ₽ в сутки:</label><br>
+          <input type="number" id="price" name="price_per_day" value="{{ data.price_per_day }}" required min="1" max="100000" step="1">
+        </p>
+        <p>
+          <label for="deposit">Залоговая стоимость, ₽:</label><br>
+          <input type="number" id="deposit" name="deposit" value="{{ data.deposit }}" required min="0" max="1000000" step="1">
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Описание и характеристики</legend>
+        <p>
+          <label for="description">Описание (абзацы — с новой строки):</label><br>
+          <textarea id="description" name="description" rows="6" cols="70" required minlength="20" maxlength="2000">{{ data.description }}</textarea>
+        </p>
+        <p>
+          <label for="specs">Характеристики (каждая с новой строки в виде «Название: значение»):</label><br>
+          <textarea id="specs" name="specs" rows="6" cols="70" maxlength="2000">{{ data.specs }}</textarea>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Изображение</legend>
+        <p>
+          <label for="image">Изображение из имеющихся:</label><br>
+          <select id="image" name="image">
+            {%- for name in images %}
+            <option value="{{ name }}"{% if data.image == name %} selected{% endif %}>{{ name }}</option>
+            {%- endfor %}
+          </select>
+        </p>
+        <p>
+          <label for="image-file">Или загрузите новое изображение (PNG, JPG, WEBP, до 2 МБ):</label><br>
+          <input type="file" id="image-file" name="image_file" accept=".png,.jpg,.jpeg,.webp">
+        </p>
+        <p>
+          <label for="image-alt">Альтернативный текст изображения (атрибут alt):</label><br>
+          <input type="text" id="image-alt" name="image_alt" value="{{ data.image_alt }}" required minlength="10" maxlength="200" size="70">
+        </p>
+      </fieldset>
+
+      <p><button type="submit">Сохранить в базе данных</button></p>
+    </form>
+{% endblock %}
