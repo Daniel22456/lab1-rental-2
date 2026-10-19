@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}Оформление договора аренды{% endblock %}
+{% block content %}
+    <h1>Оформление договора аренды — {{ wm }}</h1>
+
+    <section>
+      <h2>Ваш список аренды</h2>
+      {% if summary.count %}
+      <p>Позиций в списке: {{ summary.count }}. Стоимость аренды — {{ summary.rent|money }} ₽, залог — {{ summary.deposit|money }} ₽. Всего к оплате при получении: <strong>{{ (summary.rent + summary.deposit)|money }} ₽</strong>.</p>
+      <p><a href="{{ url_for('collection') }}">Изменить список аренды</a></p>
+      {% else %}
+      <p>Список аренды пуст. Перед оформлением договора выберите снаряжение в <a href="{{ url_for('catalog') }}">каталоге</a>.</p>
+      {% endif %}
+    </section>
+
+    <section id="damage-terms">
+      <h2>Условия возмещения ущерба</h2>
+      <ul>
+        <li>Арендатор отвечает за сохранность снаряжения с момента получения до возврата.</li>
+        <li>Повреждения, которые устраняются ремонтом, оплачиваются по стоимости ремонта и удерживаются из залога.</li>
+        <li>При утрате снаряжения или повреждении, которое невозможно устранить, залог не возвращается.</li>
+        <li>Естественный износ и загрязнение, устраняемое обычной чисткой, ущербом не считаются.</li>
+      </ul>
+    </section>
+
+    {% if errors %}
+    <section>
+      <h2>Проверьте данные формы</h2>
+      <ul>
+        {%- for error in errors %}
+        <li>{{ error }}</li>
+        {%- endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('checkout') }}">
+      <fieldset>
+        <legend>Сведения об арендаторе</legend>
+        <p>
+          <label for="last-name">Фамилия:</label><br>
+          <input type="text" id="last-name" name="last_name" value="{{ data.last_name }}" required minlength="2" maxlength="50" pattern="[А-Яа-яЁё]+(-[А-Яа-яЁё]+)?" title="Русские буквы, допускается дефис" autocomplete="family-name">
+        </p>
+        <p>
+          <label for="first-name">Имя:</label><br>
+          <input type="text" id="first-name" name="first_name" value="{{ data.first_name }}" required minlength="2" maxlength="50" pattern="[А-Яа-яЁё]+(-[А-Яа-яЁё]+)?" title="Русские буквы, допускается дефис" autocomplete="given-name">
+        </p>
+        <p>
+          <label for="middle-name">Отчество (при наличии):</label><br>
+          <input type="text" id="middle-name" name="middle_name" value="{{ data.middle_name }}" maxlength="50" pattern="[А-Яа-яЁё]+(-[А-Яа-яЁё]+)?" title="Русские буквы, допускается дефис" autocomplete="additional-name">
+        </p>
+        <p>
+          <label for="birth-date">Дата рождения:</label><br>
+          <input type="date" id="birth-date" name="birth_date" value="{{ data.birth_date }}" required min="1920-01-01" max="{{ adult }}" autocomplete="bday">
+        </p>
+        <p>
+          <label for="phone">Телефон:</label><br>
+          <input type="tel" id="phone" name="phone" value="{{ data.phone }}" required pattern="\+7[0-9]{10}" placeholder="+79991234567" title="Формат: +7 и 10 цифр без пробелов" autocomplete="tel">
+        </p>
+        <p>
+          <label for="email">Электронная почта:</label><br>
+          <input type="email" id="email" name="email" value="{{ data.email }}" required maxlength="100" placeholder="name@example.ru" autocomplete="email">
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Паспортные данные арендатора</legend>
+        <p>
+          <label for="passport-series">Серия паспорта:</label><br>
+          <input type="text" id="passport-series" name="passport_series" value="{{ data.passport_series }}" required minlength="4" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" placeholder="0000" title="4 цифры">
+        </p>
+        <p>
+          <label for="passport-number">Номер паспорта:</label><br>
+          <input type="text" id="passport-number" name="passport_number" value="{{ data.passport_number }}" required minlength="6" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="000000" title="6 цифр">
+        </p>
+        <p>
+          <label for="passport-date">Дата выдачи:</label><br>
+          <input type="date" id="passport-date" name="passport_date" value="{{ data.passport_date }}" required min="1997-01-01" max="{{ today }}">
+        </p>
+        <p>
+          <label for="passport-issuer">Кем выдан:</label><br>
+          <input type="text" id="passport-issuer" name="passport_issuer" value="{{ data.passport_issuer }}" required minlength="5" maxlength="200" size="60">
+        </p>
+        <p>
+          <label for="passport-code">Код подразделения:</label><br>
+          <input type="text" id="passport-code" name="passport_code" value="{{ data.passport_code }}" required pattern="[0-9]{3}-[0-9]{3}" placeholder="000-000" title="Формат: 000-000">
+        </p>
+        <p>
+          <label for="address">Адрес регистрации:</label><br>
+          <textarea id="address" name="address" rows="2" cols="60" required minlength="10" maxlength="300">{{ data.address }}</textarea>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Сроки похода</legend>
+        <p>
+          <label for="start-date">Дата начала похода:</label><br>
+          <input type="date" id="start-date" name="start_date" value="{{ data.start_date }}" required min="{{ today }}">
+        </p>
+        <p>
+          <label for="end-date">Дата окончания похода:</label><br>
+          <input type="date" id="end-date" name="end_date" value="{{ data.end_date }}" required min="{{ today }}">
+        </p>
+        <p>
+          <label for="people">Количество участников похода:</label><br>
+          <input type="number" id="people" name="people" value="{{ data.people }}" required min="1" max="30" step="1">
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Получение снаряжения</legend>
+        <fieldset>
+          <legend>Способ получения</legend>
+          <p>
+            <input type="radio" id="method-pickup" name="pickup_method" value="pickup" required{% if data.pickup_method == 'pickup' %} checked{% endif %}>
+            <label for="method-pickup">Самовывоз из пункта проката</label>
+          </p>
+          <p>
+            <input type="radio" id="method-delivery" name="pickup_method" value="delivery"{% if data.pickup_method == 'delivery' %} checked{% endif %}>
+            <label for="method-delivery">Доставка по городу из пункта проката</label>
+          </p>
+        </fieldset>
+        <p>
+          <label for="pickup-point">Пункт проката:</label><br>
+          <select id="pickup-point" name="pickup_point_id" required>
+            <option value="">— выберите пункт —</option>
+            {%- for p in points %}
+            <option value="{{ p.id }}"{% if data.pickup_point_id == p.id|string %} selected{% endif %}>{{ p.name }}, {{ p.address }} ({{ p.hours }})</option>
+            {%- endfor %}
+          </select>
+        </p>
+        <p>
+          <label for="pickup-time">Время получения (с 9:00 до 20:00):</label><br>
+          <input type="time" id="pickup-time" name="pickup_time" value="{{ data.pickup_time }}" required min="09:00" max="20:00" step="900">
+        </p>
+        <p>
+          <label for="comment">Комментарий к договору:</label><br>
+          <textarea id="comment" name="comment" rows="4" cols="60" maxlength="500" placeholder="Например: нужен инструктаж по установке палатки">{{ data.comment }}</textarea>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Согласия</legend>
+        <p>
+          <input type="checkbox" id="agree-damage" name="agree_damage" value="yes" required>
+          <label for="agree-damage">С <a href="#damage-terms">условиями возмещения ущерба</a> при порче или утрате снаряжения ознакомлен(а) и согласен(на)</label>
+        </p>
+        <p>
+          <input type="checkbox" id="agree-pd" name="agree_pd" value="yes" required>
+          <label for="agree-pd">Даю согласие на обработку персональных данных для заключения договора аренды</label>
+        </p>
+      </fieldset>
+
+      <p>
+        <button type="submit"{% if not summary.count %} disabled{% endif %}>Оформить договор</button>
+        <button type="reset">Очистить форму</button>
+      </p>
+    </form>
+
+    <aside>
+      <h2>При получении снаряжения</h2>
+      <ul>
+        <li>Возьмите с собой оригинал паспорта, указанного в договоре.</li>
+        <li>Проверьте комплектность снаряжения вместе с сотрудником пункта проката.</li>
+        <li>Оплатите аренду и залог наличными или банковской картой.</li>
+      </ul>
+    </aside>
+{% endblock %}

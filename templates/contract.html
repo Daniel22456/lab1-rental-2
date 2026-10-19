@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Договор аренды № {{ c.id }}{% endblock %}
+{% block content %}
+    <article>
+      <h1>Договор аренды № {{ c.id }} — {{ wm }}</h1>
+      <p>Дата оформления: <time datetime="{{ c.created_at|replace(' ', 'T') }}">{{ c.created_at|date_ru }} {{ c.created_at[11:16] }}</time></p>
+
+      <section>
+        <h2>Арендатор</h2>
+        <dl>
+          <dt>ФИО</dt>
+          <dd>{{ c.last_name }} {{ c.first_name }} {{ c.middle_name }}</dd>
+          <dt>Дата рождения</dt>
+          <dd><time datetime="{{ c.birth_date }}">{{ c.birth_date|date_ru }}</time></dd>
+          <dt>Паспорт</dt>
+          <dd>серия {{ c.passport_series }}, номер ***{{ c.passport_number[-3:] }}, выдан <time datetime="{{ c.passport_date }}">{{ c.passport_date|date_ru }}</time></dd>
+          <dt>Телефон</dt>
+          <dd>{{ c.phone }}</dd>
+          <dt>Электронная почта</dt>
+          <dd>{{ c.email }}</dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Поход и получение снаряжения</h2>
+        <dl>
+          <dt>Период похода</dt>
+          <dd>с <time datetime="{{ c.start_date }}">{{ c.start_date|date_ru }}</time> по <time datetime="{{ c.end_date }}">{{ c.end_date|date_ru }}</time></dd>
+          <dt>Участников похода</dt>
+          <dd>{{ c.people }}</dd>
+          <dt>Способ получения</dt>
+          <dd>{{ 'Самовывоз из пункта проката' if c.pickup_method == 'pickup' else 'Доставка по городу' }}</dd>
+          <dt>Пункт проката</dt>
+          <dd>{{ c.point_name }}, {{ c.point_address }}</dd>
+          <dt>Время получения</dt>
+          <dd>{{ c.pickup_time }}</dd>
+          {%- if c.comment %}
+          <dt>Комментарий</dt>
+          <dd>{{ c.comment }}</dd>
+          {%- endif %}
+        </dl>
+      </section>
+
+      <section>
+        <h2>Арендуемое снаряжение</h2>
+        <table>
+          <caption>Снаряжение по договору № {{ c.id }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Наименование</th>
+              <th scope="col">Срок аренды, дней</th>
+              <th scope="col">Цена за сутки, ₽</th>
+              <th scope="col">Стоимость аренды, ₽</th>
+              <th scope="col">Залог, ₽</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for i in items %}
+            <tr>
+              <td>{{ i.equipment_name }}</td>
+              <td>{{ i.days }}</td>
+              <td>{{ i.price_per_day|money }}</td>
+              <td>{{ (i.days * i.price_per_day)|money }}</td>
+              <td>{{ i.deposit|money }}</td>
+            </tr>
+            {%- endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="3">Итого</th>
+              <td>{{ c.total_rent|money }}</td>
+              <td>{{ c.total_deposit|money }}</td>
+            </tr>
+            <tr>
+              <th scope="row" colspan="3">К оплате при получении</th>
+              <td colspan="2"><strong>{{ (c.total_rent + c.total_deposit)|money }}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+    </article>
+
+    <p><a href="{{ url_for('catalog') }}">Вернуться в каталог</a></p>
+{% endblock %}
