@@ -1,0 +1,23 @@
+@use "../variables" as *;
+
+.alert {
+  padding: $space-m $space-l;
+  background-color: #e3efe6;
+  border-left: 6px solid $color-primary;
+  border-radius: $radius;
+
+  &__title {
+    margin: 0 0 $space-s;
+    font-size: 18px;
+  }
+
+  &__list {
+    margin: 0;
+  }
+
+  &_error {
+    color: $color-error;
+    background-color: #fbe9e7;
+    border-left-color: $color-error;
+  }
+}

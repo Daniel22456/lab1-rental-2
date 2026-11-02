@@ -1,0 +1,12 @@
+{
+  "name": "lab1-rental-2",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "sass static/scss/style.scss static/css/style.css --no-source-map",
+    "watch:css": "sass --watch static/scss/style.scss:static/css/style.css --no-source-map"
+  },
+  "devDependencies": {
+    "sass": "^1.83.4"
+  }
+}

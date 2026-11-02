@@ -1,0 +1,17 @@
+// Главный файл стилей (ЛР2, вариант 19). Компиляция: npm run build:css
+@use "variables";
+@use "reset";
+
+@use "blocks/page";
+@use "blocks/header";
+@use "blocks/nav";
+@use "blocks/footer";
+@use "blocks/section";
+@use "blocks/link";
+@use "blocks/button";
+@use "blocks/form";
+@use "blocks/table";
+@use "blocks/card";
+@use "blocks/breadcrumbs";
+@use "blocks/total";
+@use "blocks/alert";

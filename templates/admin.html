@@ -1,102 +1,106 @@
 {% extends "base.html" %}
 {% block title %}Управление базой данных{% endblock %}
 {% block content %}
-    <h1>Управление базой данных — {{ wm }}</h1>
-    <p>Здесь можно изменять данные в базе: добавлять, редактировать и удалять снаряжение, добавлять и удалять категории, просматривать оформленные договоры.</p>
+    <h1 class="page__title">Управление базой данных — {{ wm }}</h1>
+    <p class="page__text">Здесь можно изменять данные в базе: добавлять, редактировать и удалять снаряжение, добавлять и удалять категории, просматривать оформленные договоры.</p>
 
-    <section>
-      <h2>Снаряжение</h2>
-      <p><a href="{{ url_for('admin_edit') }}">Добавить новое снаряжение</a></p>
+    <section class="page__section section">
+      <h2 class="section__title">Снаряжение</h2>
+      <p class="section__text"><a class="button" href="{{ url_for('admin_edit') }}">Добавить новое снаряжение</a></p>
       {% if items %}
       <form method="post" action="{{ url_for('admin_delete') }}">
-        <table>
-          <caption>Снаряжение в базе данных ({{ items|length }} {{ items|length|plural('запись', 'записи', 'записей') }})</caption>
-          <thead>
-            <tr>
-              <th scope="col">Наименование (отметьте для удаления)</th>
-              <th scope="col">Категория</th>
-              <th scope="col">Цена, ₽ в сутки</th>
-              <th scope="col">Залог, ₽</th>
-              <th scope="col">Редактирование</th>
-            </tr>
-          </thead>
-          <tbody>
-            {%- for item in items %}
-            <tr>
-              <td><input type="checkbox" id="eq-{{ item.id }}" name="equipment_id" value="{{ item.id }}"> <label for="eq-{{ item.id }}">{{ item.name }}</label></td>
-              <td>{{ item.category }}</td>
-              <td>{{ item.price_per_day|money }}</td>
-              <td>{{ item.deposit|money }}</td>
-              <td><a href="{{ url_for('admin_edit', id=item.id) }}">Изменить</a></td>
-            </tr>
-            {%- endfor %}
-          </tbody>
-        </table>
-        <p><button type="submit">Удалить отмеченные записи</button></p>
+        <div class="section__table">
+          <table class="table">
+            <caption class="table__caption">Снаряжение в базе данных ({{ items|length }} {{ items|length|plural('запись', 'записи', 'записей') }})</caption>
+            <thead>
+              <tr>
+                <th class="table__head" scope="col">Наименование (отметьте для удаления)</th>
+                <th class="table__head" scope="col">Категория</th>
+                <th class="table__head" scope="col">Цена, ₽ в сутки</th>
+                <th class="table__head" scope="col">Залог, ₽</th>
+                <th class="table__head" scope="col">Редактирование</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for item in items %}
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" id="eq-{{ item.id }}" name="equipment_id" value="{{ item.id }}"> <label for="eq-{{ item.id }}">{{ item.name }}</label></td>
+                <td class="table__cell">{{ item.category }}</td>
+                <td class="table__cell table__cell_num">{{ item.price_per_day|money }}</td>
+                <td class="table__cell table__cell_num">{{ item.deposit|money }}</td>
+                <td class="table__cell"><a class="link" href="{{ url_for('admin_edit', id=item.id) }}">Изменить</a></td>
+              </tr>
+              {%- endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p class="section__text"><button class="button button_secondary" type="submit">Удалить отмеченные записи</button></p>
       </form>
       {% else %}
-      <p>В базе нет снаряжения.</p>
+      <p class="section__text">В базе нет снаряжения.</p>
       {% endif %}
     </section>
 
-    <section>
-      <h2>Категории</h2>
-      <ul>
+    <section class="page__section section">
+      <h2 class="section__title">Категории</h2>
+      <ul class="section__list">
         {%- for c in categories %}
-        <li>{{ c.name }} — {{ c.n }} {{ c.n|plural('позиция', 'позиции', 'позиций') }}</li>
+        <li class="section__item">{{ c.name }} — {{ c.n }} {{ c.n|plural('позиция', 'позиции', 'позиций') }}</li>
         {%- endfor %}
       </ul>
-      <form method="post" action="{{ url_for('admin_category') }}">
-        <p>
-          <label for="new-category">Новая категория:</label>
-          <input type="text" id="new-category" name="name" required minlength="3" maxlength="50">
-          <button type="submit">Добавить категорию</button>
+      <form class="form form_inline" method="post" action="{{ url_for('admin_category') }}">
+        <p class="form__row">
+          <label class="form__label" for="new-category">Новая категория:</label>
+          <input class="form__input" type="text" id="new-category" name="name" required minlength="3" maxlength="50">
+          <button class="form__button button" type="submit">Добавить категорию</button>
         </p>
       </form>
-      <form method="post" action="{{ url_for('admin_category_delete') }}">
-        <p>
-          <label for="delete-category">Удалить пустую категорию:</label>
-          <select id="delete-category" name="category_id" required>
+      <form class="form form_inline" method="post" action="{{ url_for('admin_category_delete') }}">
+        <p class="form__row">
+          <label class="form__label" for="delete-category">Удалить пустую категорию:</label>
+          <select class="form__input" id="delete-category" name="category_id" required>
             <option value="">— выберите категорию —</option>
             {%- for c in categories if c.n == 0 %}
             <option value="{{ c.id }}">{{ c.name }}</option>
             {%- endfor %}
           </select>
-          <button type="submit">Удалить категорию</button>
+          <button class="form__button button button_secondary" type="submit">Удалить категорию</button>
         </p>
       </form>
     </section>
 
-    <section>
-      <h2>Оформленные договоры</h2>
+    <section class="page__section section">
+      <h2 class="section__title">Оформленные договоры</h2>
       {% if contracts %}
-      <table>
-        <caption>Договоры аренды в базе данных</caption>
-        <thead>
-          <tr>
-            <th scope="col">№ договора</th>
-            <th scope="col">Дата оформления</th>
-            <th scope="col">Арендатор</th>
-            <th scope="col">Период похода</th>
-            <th scope="col">Аренда, ₽</th>
-            <th scope="col">Залог, ₽</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for c in contracts %}
-          <tr>
-            <td><a href="{{ url_for('contract', id=c.id) }}">№ {{ c.id }}</a></td>
-            <td>{{ c.created_at|date_ru }}</td>
-            <td>{{ c.last_name }} {{ c.first_name }}</td>
-            <td>{{ c.start_date|date_ru }} — {{ c.end_date|date_ru }}</td>
-            <td>{{ c.total_rent|money }}</td>
-            <td>{{ c.total_deposit|money }}</td>
-          </tr>
-          {%- endfor %}
-        </tbody>
-      </table>
+      <div class="section__table">
+        <table class="table">
+          <caption class="table__caption">Договоры аренды в базе данных</caption>
+          <thead>
+            <tr>
+              <th class="table__head" scope="col">№ договора</th>
+              <th class="table__head" scope="col">Дата оформления</th>
+              <th class="table__head" scope="col">Арендатор</th>
+              <th class="table__head" scope="col">Период похода</th>
+              <th class="table__head" scope="col">Аренда, ₽</th>
+              <th class="table__head" scope="col">Залог, ₽</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for c in contracts %}
+            <tr class="table__row">
+              <td class="table__cell"><a class="link" href="{{ url_for('contract', id=c.id) }}">№ {{ c.id }}</a></td>
+              <td class="table__cell">{{ c.created_at|date_ru }}</td>
+              <td class="table__cell">{{ c.last_name }} {{ c.first_name }}</td>
+              <td class="table__cell">{{ c.start_date|date_ru }} — {{ c.end_date|date_ru }}</td>
+              <td class="table__cell table__cell_num">{{ c.total_rent|money }}</td>
+              <td class="table__cell table__cell_num">{{ c.total_deposit|money }}</td>
+            </tr>
+            {%- endfor %}
+          </tbody>
+        </table>
+      </div>
       {% else %}
-      <p>Пока нет оформленных договоров.</p>
+      <p class="section__text">Пока нет оформленных договоров.</p>
       {% endif %}
     </section>
 {% endblock %}

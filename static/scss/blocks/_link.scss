@@ -1,0 +1,15 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.link {
+  color: $color-primary;
+  transition: color $transition;
+
+  &:hover {
+    color: $color-accent-dark;
+  }
+
+  &:focus-visible {
+    @include focus;
+  }
+}

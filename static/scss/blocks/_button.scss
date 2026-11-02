@@ -1,0 +1,42 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: $font-main;
+  font-size: 15px;
+  font-weight: bold;
+  color: $color-surface;
+  text-decoration: none;
+  background-color: $color-accent;
+  border: 2px solid $color-accent;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background-color $transition, transform $transition;
+
+  &:hover {
+    background-color: $color-accent-dark;
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    @include focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Модификатор: второстепенная кнопка
+  &_secondary {
+    color: $color-primary-dark;
+    background-color: $color-surface;
+    border-color: $color-primary;
+
+    &:hover {
+      background-color: #e3efe6;
+    }
+  }
+}

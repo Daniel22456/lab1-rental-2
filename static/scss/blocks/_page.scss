@@ -1,0 +1,53 @@
+@use "../variables" as *;
+
+.page {
+  font-family: $font-main;
+  font-size: $font-size;
+  line-height: $line-height;
+  color: $color-text;
+  background-color: $color-bg;
+
+  &__main {
+    max-width: $container;
+    margin: 0 auto;
+    padding: $space-l $space-m;
+  }
+
+  &__title,
+  &__subtitle {
+    margin: 0 0 $space-m;
+    font-family: $font-heading;
+    line-height: 1.25;
+  }
+
+  &__title {
+    font-size: 32px;
+  }
+
+  &__subtitle {
+    font-size: 24px;
+    border-bottom: 3px solid $color-accent;
+  }
+
+  &__text {
+    margin: 0 0 $space-m;
+  }
+
+  // Отступы между блоками задаёт элемент страницы (БЭМ-микс)
+  &__section,
+  &__card {
+    margin: 0 0 $space-l;
+  }
+
+  &__table {
+    overflow-x: auto;
+  }
+
+  // Вариант 19: итоговый расчёт прилипает к верху окна при прокрутке формы
+  &__total {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: 0 0 $space-l;
+  }
+}

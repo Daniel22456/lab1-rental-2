@@ -1,0 +1,39 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// Блок итогового расчёта; прилипание задаёт элемент page__total
+.total {
+  padding: $space-m $space-l;
+  color: $color-surface;
+  background-color: $color-primary-dark;
+  border-radius: $radius;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+  &__title {
+    margin: 0 0 $space-s;
+    font-size: 18px;
+  }
+
+  &__text {
+    margin: 0 0 4px;
+  }
+
+  &__value {
+    font-size: 18px;
+
+    &_accent {
+      padding: 2px $space-s;
+      background-color: $color-accent;
+      border-radius: 4px;
+    }
+  }
+
+  &__link {
+    margin-left: $space-s;
+    color: $color-surface;
+
+    &:focus-visible {
+      @include focus;
+    }
+  }
+}

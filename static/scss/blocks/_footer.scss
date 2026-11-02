@@ -1,0 +1,32 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.footer {
+  font-size: 14px;
+  color: #d8ddd9;
+  background-color: $color-text;
+
+  &__inner {
+    max-width: $container;
+    margin: 0 auto;
+    padding: $space-l $space-m;
+  }
+
+  &__text {
+    margin: 0 0 $space-s;
+    font-style: normal;
+  }
+
+  &__link {
+    color: $color-surface;
+    transition: color $transition;
+
+    &:hover {
+      color: $color-accent;
+    }
+
+    &:focus-visible {
+      @include focus;
+    }
+  }
+}

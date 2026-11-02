@@ -1,0 +1,46 @@
+@use "../variables" as *;
+
+.table {
+  width: 100%;
+  background-color: $color-surface;
+  border-collapse: collapse;
+
+  &__caption {
+    padding: $space-s 0;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  &__head,
+  &__cell {
+    padding: $space-s;
+    text-align: left;
+    border: 1px solid $color-border;
+  }
+
+  &__head {
+    color: $color-surface;
+    background-color: $color-primary-dark;
+  }
+
+  &__cell_num {
+    text-align: right;
+  }
+
+  &__cell_group {
+    background-color: #e3efe6;
+  }
+
+  &__row {
+    transition: background-color $transition;
+
+    &:hover {
+      background-color: #fbeadb;
+    }
+  }
+
+  &__foot {
+    font-weight: bold;
+    background-color: $color-bg;
+  }
+}

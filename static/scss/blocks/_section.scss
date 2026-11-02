@@ -1,0 +1,76 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.section {
+  @include box;
+
+  &__title,
+  &__subtitle {
+    margin: 0 0 $space-m;
+    font-family: $font-heading;
+    line-height: 1.25;
+  }
+
+  &__title {
+    font-size: 22px;
+  }
+
+  &__subtitle {
+    font-size: 18px;
+  }
+
+  &__text,
+  &__list,
+  &__specs {
+    margin: 0 0 $space-m;
+  }
+
+  &__list {
+    padding-left: $space-l;
+  }
+
+  &__part {
+    margin-top: $space-l;
+    padding-top: $space-m;
+    border-top: 1px solid $color-border;
+  }
+
+  &__image {
+    width: 100%;
+    max-width: 480px;
+    height: 300px;
+    margin-bottom: $space-m;
+    object-fit: cover;
+    border-radius: $radius;
+  }
+
+  &__figure {
+    margin: 0 0 $space-m;
+  }
+
+  &__caption {
+    font-size: 14px;
+    color: $color-muted;
+  }
+
+  &__term {
+    font-weight: bold;
+  }
+
+  &__value {
+    margin: 0 0 $space-s;
+    padding-bottom: $space-s;
+    border-bottom: 1px dashed $color-border;
+  }
+
+  &__table {
+    overflow-x: auto;
+    margin-bottom: $space-m;
+  }
+
+  // Модификатор: дополнительная информация (aside)
+  &_note {
+    background-color: #fbeadb;
+    border-color: $color-accent;
+  }
+}

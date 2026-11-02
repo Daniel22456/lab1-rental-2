@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-    <h1>{{ title }} — {{ wm }}</h1>
-    <p>{{ message }}</p>
-    <p><a href="{{ url_for('index') }}">Перейти на главную страницу</a></p>
+    <h1 class="page__title">{{ title }} — {{ wm }}</h1>
+    <p class="page__text">{{ message }}</p>
+    <p class="page__text"><a class="button" href="{{ url_for('index') }}">Перейти на главную страницу</a></p>
 {% endblock %}

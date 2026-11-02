@@ -1,0 +1,24 @@
+@use "../variables" as *;
+
+.breadcrumbs {
+  font-size: 14px;
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: inline;
+
+    &::after {
+      content: " / ";
+      color: $color-muted;
+    }
+
+    &:last-child::after {
+      content: "";
+    }
+  }
+}

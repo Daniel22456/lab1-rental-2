@@ -1,0 +1,70 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.form {
+  &__fieldset {
+    @include box;
+    margin: 0 0 $space-l;
+
+    &_nested {
+      margin: 0 0 $space-m;
+      background-color: $color-bg;
+    }
+  }
+
+  &__legend {
+    padding: 0 $space-s;
+    font-family: $font-heading;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__row {
+    margin: 0 0 $space-m;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    padding: $space-s;
+    font: inherit;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    transition: border-color $transition;
+
+    &:hover {
+      border-color: $color-primary;
+    }
+
+    &:focus-visible {
+      @include focus;
+    }
+
+    &_short {
+      width: 100px;
+    }
+  }
+
+  &__button {
+    margin: 0 $space-s $space-s 0;
+  }
+
+  // Модификатор: подпись, поле и кнопка в одну строку
+  &_inline {
+    @include box;
+  }
+
+  &_inline &__label,
+  &_inline &__input {
+    display: inline-block;
+    width: auto;
+    margin: 0 $space-s $space-s 0;
+  }
+}

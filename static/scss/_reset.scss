@@ -1,0 +1,16 @@
+// Базовый сброс (единственное место с селекторами тегов)
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

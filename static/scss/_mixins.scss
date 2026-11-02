@@ -1,0 +1,15 @@
+@use "variables" as *;
+
+// Рамка фокуса при работе с клавиатуры
+@mixin focus {
+  outline: 3px solid $color-accent;
+  outline-offset: 2px;
+}
+
+// Белый блок с рамкой
+@mixin box {
+  padding: $space-l;
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+}

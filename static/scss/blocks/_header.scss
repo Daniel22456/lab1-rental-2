@@ -1,0 +1,43 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.header {
+  color: $color-surface;
+  background-color: $color-primary-dark;
+  border-bottom: 4px solid $color-accent;
+
+  &__inner {
+    max-width: $container;
+    margin: 0 auto;
+    padding: $space-m;
+  }
+
+  &__brand {
+    margin: 0 0 $space-m;
+  }
+
+  &__logo-link {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: $space-s;
+    transition: transform $transition;
+
+    &:hover {
+      transform: rotate(-10deg);
+    }
+
+    &:focus-visible {
+      @include focus;
+    }
+  }
+
+  &__logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  &__name {
+    font-family: $font-heading;
+    font-size: 24px;
+  }
+}

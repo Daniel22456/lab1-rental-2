@@ -9,3 +9,7 @@ venv/
 
 # Загруженные через страницу «Управление» изображения
 static/images/upload-*
+
+# Node.js и SCSS
+node_modules/
+.sass-cache/

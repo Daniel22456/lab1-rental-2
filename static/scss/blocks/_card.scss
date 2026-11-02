@@ -1,0 +1,98 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.card {
+  overflow: hidden;
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  transition: box-shadow $transition, transform $transition;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  // Фото и описание стоят рядом как inline-block (без flex и float)
+  &__media {
+    position: relative;   // точка отсчёта для слоя «В аренде»
+    display: inline-block;
+    width: 260px;
+    vertical-align: top;
+  }
+
+  &__image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+  }
+
+  // Вариант 19: слой «В аренде» поверх фото
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding-top: 110px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: $color-surface;
+    background-color: rgba(0, 0, 0, 0.55);
+  }
+
+  &__body {
+    display: inline-block;
+    width: calc(100% - 260px);
+    padding: $space-m $space-l;
+    vertical-align: top;
+  }
+
+  &__title {
+    margin: 0 0 $space-s;
+    font-family: $font-heading;
+    font-size: 20px;
+  }
+
+  &__link {
+    color: $color-primary-dark;
+    text-decoration: none;
+    transition: color $transition;
+
+    &:hover {
+      color: $color-accent-dark;
+    }
+
+    &:focus-visible {
+      @include focus;
+    }
+  }
+
+  &__text,
+  &__list {
+    margin: 0 0 $space-s;
+  }
+
+  &__list {
+    padding-left: $space-l;
+  }
+
+  &__price {
+    color: $color-accent-dark;
+  }
+
+  &__checkbox {
+    accent-color: $color-accent;
+  }
+
+  @media (max-width: 700px) {
+    &__media,
+    &__body {
+      display: block;
+      width: 100%;
+    }
+  }
+}
