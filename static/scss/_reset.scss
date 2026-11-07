@@ -1,3 +1,5 @@
+@use "mixins" as *;
+
 // Базовый сброс (единственное место с селекторами тегов)
 *,
 *::before,
@@ -13,4 +15,24 @@ body {
 img {
   display: block;
   max-width: 100%;
+}
+
+// Видимый фокус для всех интерактивных элементов (доступность)
+a,
+button,
+input,
+select,
+textarea,
+[tabindex] {
+  &:focus-visible {
+    @include focus;
+  }
+}
+
+// У полей даты и времени фокус получают внутренние сегменты (день, месяц, год)
+input[type="date"],
+input[type="time"] {
+  &:focus-within {
+    @include focus;
+  }
 }

@@ -6,28 +6,30 @@
   background-color: $color-primary-dark;
   border-bottom: 4px solid $color-accent;
 
+  // Микросетка шапки (Flexbox): логотип, название, меню
   &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-s $space-m;
     max-width: $container;
     margin: 0 auto;
     padding: $space-m;
   }
 
-  &__brand {
-    margin: 0 0 $space-m;
-  }
-
   &__logo-link {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: $space-s;
+    // на тёмном фоне рамка фокуса белая
+    &:focus-visible {
+      outline-color: $color-surface;
+    }
+
+    display: flex;
+    flex-shrink: 0;
+    border-radius: 50%;
     transition: transform $transition;
 
     &:hover {
       transform: rotate(-10deg);
-    }
-
-    &:focus-visible {
-      @include focus;
     }
   }
 
@@ -36,8 +38,34 @@
     height: 48px;
   }
 
+  &__brand {
+    flex: 1 1 200px;
+    margin: 0;
+  }
+
   &__name {
+    display: block;
     font-family: $font-heading;
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  // Мобильные и планшеты: меню на всю ширину под логотипом
+  &__nav {
+    flex-basis: 100%;
+  }
+
+  @include tablet {
+    &__name {
+      display: inline;
+      font-size: 24px;
+    }
+  }
+
+  // ПК: всё в одну строку, меню прижато вправо
+  @include desktop {
+    &__nav {
+      flex-basis: auto;
+      margin-left: auto;
+    }
   }
 }

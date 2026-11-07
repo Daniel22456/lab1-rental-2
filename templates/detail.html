@@ -62,15 +62,17 @@
         </form>
       </section>
     </article>
+{% endblock %}
 
+{% block aside %}
     {% if related %}
-    <aside class="page__section section section_note">
+    <section class="page__section section section_note">
       <h2 class="section__title">Другое снаряжение в категории «{{ item.category }}»</h2>
       <ul class="section__list">
         {%- for r in related %}
         <li class="section__item"><a class="link" href="{{ url_for('detail', id=r.id) }}">{{ r.name }}</a> — {{ r.price_per_day|money }} ₽ в сутки</li>
         {%- endfor %}
       </ul>
-    </aside>
+    </section>
     {% endif %}
 {% endblock %}

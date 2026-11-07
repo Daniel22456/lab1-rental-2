@@ -1,27 +1,25 @@
 @use "../variables" as *;
-@use "../mixins" as *;
 
 .button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 10px 18px;
   font-family: $font-main;
   font-size: 15px;
   font-weight: bold;
   color: $color-surface;
   text-decoration: none;
-  background-color: $color-accent;
-  border: 2px solid $color-accent;
+  background-color: $color-accent-dark;
+  border: 2px solid $color-accent-dark;
   border-radius: $radius;
   cursor: pointer;
   transition: background-color $transition, transform $transition;
 
   &:hover {
-    background-color: $color-accent-dark;
+    background-color: $color-accent-darker;
     transform: translateY(-2px);
-  }
-
-  &:focus-visible {
-    @include focus;
   }
 
   &:disabled {

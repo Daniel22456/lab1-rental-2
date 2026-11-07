@@ -21,34 +21,35 @@
     {% if groups %}
     <p class="page__text">Отметьте одну или несколько позиций, укажите срок аренды внизу страницы и нажмите «Добавить в список аренды».</p>
     <form method="post" action="{{ url_for('collection_add') }}">
-      {%- for group in groups %}
-      <section class="page__section">
-        <h2 class="page__subtitle">{{ group.name }}</h2>
+      {#- Вариант 19: сетка карточек снаряжения (Grid, repeat(auto-fit, minmax(...))) #}
+      <ul class="page__section catalog" aria-label="Снаряжение в каталоге">
+        {%- for group in groups %}
         {%- for item in group.rows %}
-        <article class="page__card card">
+        <li class="catalog__item card">
           <div class="card__media">
-            <img class="card__image" src="{{ item.image|image_src }}" alt="{{ item.image_alt }}" width="240">
+            <img class="card__image" src="{{ item.image|image_src }}" alt="{{ item.image_alt }}" width="400" height="300">
             {%- if item.id in rented %}
             <p class="card__overlay">В аренде</p>
             {%- endif %}
-          </div><div class="card__body">
-            <h3 class="card__title"><a class="card__link" href="{{ url_for('detail', id=item.id) }}">{{ item.name }}</a></h3>
-            <p class="card__text">{{ item.description|first_sentence }}</p>
-            <ul class="card__list">
-              <li class="card__item">Цена аренды: <strong class="card__price">{{ item.price_per_day|money }} ₽</strong> в сутки</li>
-              <li class="card__item">Залоговая стоимость: {{ item.deposit|money }} ₽</li>
-            </ul>
-            <p class="card__text">
-              <input class="card__checkbox" type="checkbox" id="pick-{{ item.id }}" name="equipment_id" value="{{ item.id }}">
-              <label for="pick-{{ item.id }}">Выбрать: {{ item.name }}</label>
-              {%- if item.id in in_list %} (уже в списке аренды){% endif %}
-            </p>
-            <p class="card__text"><a class="link" href="{{ url_for('detail', id=item.id) }}">Подробнее о снаряжении</a></p>
           </div>
-        </article>
+          <div class="card__body">
+            <p class="card__category">{{ group.name }}</p>
+            <h2 class="card__title"><a class="card__link" href="{{ url_for('detail', id=item.id) }}">{{ item.name }}</a></h2>
+            <p class="card__text">{{ item.description|first_sentence }}</p>
+            <p class="card__deposit">Залог: {{ item.deposit|money }} ₽{% if item.id in in_list %} · уже в списке аренды{% endif %}</p>
+            <div class="card__footer">
+              <p class="card__price"><strong class="card__price-value">{{ item.price_per_day|money }} ₽</strong> / сутки</p>
+              <label class="card__pick" for="pick-{{ item.id }}">
+                <input class="card__checkbox" type="checkbox" id="pick-{{ item.id }}" name="equipment_id" value="{{ item.id }}">
+                Выбрать
+                <span class="card__hidden">: {{ item.name }}</span>
+              </label>
+            </div>
+          </div>
+        </li>
         {%- endfor %}
-      </section>
-      {%- endfor %}
+        {%- endfor %}
+      </ul>
 
       <fieldset class="page__section form form_inline">
         <legend class="form__legend">Добавить отмеченное снаряжение в список аренды</legend>
@@ -62,13 +63,15 @@
     {% else %}
     <p class="page__text">В этой категории пока нет снаряжения.</p>
     {% endif %}
+{% endblock %}
 
-    <aside class="page__section section section_note">
+{% block aside %}
+    <section class="page__section section section_note">
       <h2 class="section__title">Условия аренды</h2>
       <ul class="section__list">
         <li class="section__item">Стоимость аренды = цена за сутки × количество суток.</li>
         <li class="section__item">Залог вносится при получении и возвращается после сдачи снаряжения.</li>
         <li class="section__item">Если позиция уже есть в списке аренды, новый срок заменит прежний.</li>
       </ul>
-    </aside>
+    </section>
 {% endblock %}

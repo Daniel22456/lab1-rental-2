@@ -93,14 +93,17 @@
 
       <fieldset class="form__fieldset">
         <legend class="form__legend">Сроки похода</legend>
-        <p class="form__row">
-          <label class="form__label" for="start-date">Дата начала похода:</label>
-          <input class="form__input" type="date" id="start-date" name="start_date" value="{{ data.start_date }}" required min="{{ today }}">
-        </p>
-        <p class="form__row">
-          <label class="form__label" for="end-date">Дата окончания похода:</label>
-          <input class="form__input" type="date" id="end-date" name="end_date" value="{{ data.end_date }}" required min="{{ today }}">
-        </p>
+        {#- Вариант 19: даты начала и конца в один ряд (Flexbox, flex: 1) #}
+        <div class="form__dates" role="group" aria-label="Период аренды">
+          <p class="form__row form__row_date">
+            <label class="form__label" for="start-date">Дата начала похода:</label>
+            <input class="form__input" type="date" id="start-date" name="start_date" value="{{ data.start_date }}" required min="{{ today }}">
+          </p>
+          <p class="form__row form__row_date">
+            <label class="form__label" for="end-date">Дата окончания похода:</label>
+            <input class="form__input" type="date" id="end-date" name="end_date" value="{{ data.end_date }}" required min="{{ today }}">
+          </p>
+        </div>
         <p class="form__row">
           <label class="form__label" for="people">Количество участников похода:</label>
           <input class="form__input" type="number" id="people" name="people" value="{{ data.people }}" required min="1" max="30" step="1">
@@ -156,13 +159,15 @@
         <button class="form__button button button_secondary" type="reset">Очистить форму</button>
       </p>
     </form>
+{% endblock %}
 
-    <aside class="page__section section section_note">
+{% block aside %}
+    <section class="page__section section section_note">
       <h2 class="section__title">При получении снаряжения</h2>
       <ul class="section__list">
         <li class="section__item">Возьмите с собой оригинал паспорта, указанного в договоре.</li>
         <li class="section__item">Проверьте комплектность снаряжения вместе с сотрудником пункта проката.</li>
         <li class="section__item">Оплатите аренду и залог наличными или банковской картой.</li>
       </ul>
-    </aside>
+    </section>
 {% endblock %}

@@ -1,16 +1,86 @@
 @use "../variables" as *;
+@use "../mixins" as *;
 
+// Макросетка страницы (Grid). Mobile First: все области в одну колонку
 .page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "aside"
+    "footer";
+  min-height: 100vh;
   font-family: $font-main;
   font-size: $font-size;
   line-height: $line-height;
   color: $color-text;
   background-color: $color-bg;
 
-  &__main {
+  &__header {
+    grid-area: header;
+  }
+
+  &__main,
+  &__aside {
+    width: 100%;
     max-width: $container;
     margin: 0 auto;
     padding: $space-l $space-m;
+  }
+
+  &__main {
+    grid-area: main;
+  }
+
+  &__aside {
+    grid-area: aside;
+    padding-top: 0;
+  }
+
+  &__footer {
+    grid-area: footer;
+  }
+
+  // ПК: боковая панель справа от основного содержимого
+  @include desktop {
+    &_sidebar {
+      grid-template-columns: 1fr minmax(0, $container - $sidebar) $sidebar 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "header header header header"
+        ".      main   aside  ."
+        "footer footer footer footer";
+    }
+
+    &_sidebar &__main,
+    &_sidebar &__aside {
+      max-width: none;
+    }
+
+    &_sidebar &__aside {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      padding-top: $space-l;
+      padding-left: 0;
+    }
+  }
+
+  // Ссылка «Перейти к содержимому» видна только при фокусе с клавиатуры
+  &__skip {
+    position: absolute;
+    top: -100px;
+    left: $space-m;
+    z-index: 100;
+    padding: $space-s $space-m;
+    background-color: $color-surface;
+    border-radius: $radius;
+
+    &:focus {
+      top: $space-s;
+    }
   }
 
   &__title,
@@ -21,7 +91,11 @@
   }
 
   &__title {
-    font-size: 32px;
+    font-size: 26px;
+
+    @include tablet {
+      font-size: 32px;
+    }
   }
 
   &__subtitle {
@@ -33,7 +107,6 @@
     margin: 0 0 $space-m;
   }
 
-  // Отступы между блоками задаёт элемент страницы (БЭМ-микс)
   &__section,
   &__card {
     margin: 0 0 $space-l;
@@ -43,7 +116,7 @@
     overflow-x: auto;
   }
 
-  // Вариант 19: итоговый расчёт прилипает к верху окна при прокрутке формы
+  // Итоговый расчёт прилипает к верху окна при прокрутке формы (ЛР2)
   &__total {
     position: sticky;
     top: 0;

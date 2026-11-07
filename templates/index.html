@@ -40,13 +40,15 @@
         <li class="section__item"><a class="link" href="{{ url_for('admin') }}">Управление</a> — редактирование базы данных снаряжения и просмотр договоров.</li>
       </ul>
     </section>
+{% endblock %}
 
-    <aside class="page__section section section_note">
+{% block aside %}
+    <section class="page__section section section_note">
       <h2 class="section__title">Важно знать</h2>
       <ul class="section__list">
         <li class="section__item">Договор аренды заключается с совершеннолетним гражданином при предъявлении паспорта.</li>
         <li class="section__item">Срок аренды — от 1 до 30 суток.</li>
         <li class="section__item">Залог возвращается в день сдачи снаряжения.</li>
       </ul>
-    </aside>
+    </section>
 {% endblock %}

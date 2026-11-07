@@ -1,0 +1,12 @@
+@use "../variables" as *;
+
+// Вариант 19: сетка карточек снаряжения (Grid).
+// Число колонок браузер считает сам: 1 на телефоне, 2–3 на планшете и ПК
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: $space-l;
+  margin: 0 0 $space-l;
+  padding: 0;
+  list-style: none;
+}

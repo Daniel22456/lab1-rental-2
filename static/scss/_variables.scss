@@ -1,8 +1,9 @@
 // Цвета
-$color-primary: #2f7d4f;
+$color-primary: #276a42;        // затемнён для контраста 4.5:1 (WCAG AA)
 $color-primary-dark: #1f5a37;
 $color-accent: #e07b2a;
-$color-accent-dark: #b95f17;
+$color-accent-dark: #a0500f;    // текст и кнопки на белом, контраст 5.7:1
+$color-accent-darker: #8a420a;
 $color-bg: #f5f2ea;
 $color-surface: #ffffff;
 $color-text: #1f2a24;
@@ -21,5 +22,10 @@ $space-s: 8px;
 $space-m: 16px;
 $space-l: 24px;
 $radius: 8px;
-$container: 1000px;
+$container: 1160px;   // max-width контейнеров (не фиксированная ширина)
+$sidebar: 300px;      // ширина боковой панели на ПК
 $transition: 0.3s ease;
+
+// Контрольные точки (Mobile First: базовые стили — до 768px)
+$bp-tablet: 768px;
+$bp-desktop: 1200px;

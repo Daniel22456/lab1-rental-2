@@ -5,6 +5,11 @@
   &__fieldset {
     @include box;
     margin: 0 0 $space-l;
+    padding: $space-m;
+
+    @include tablet {
+      padding: $space-l;
+    }
 
     &_nested {
       margin: 0 0 $space-m;
@@ -21,6 +26,13 @@
 
   &__row {
     margin: 0 0 $space-m;
+
+    // Флажок или переключатель рядом с подписью
+    &_check {
+      display: flex;
+      align-items: flex-start;
+      gap: $space-s;
+    }
   }
 
   &__label {
@@ -43,28 +55,50 @@
       border-color: $color-primary;
     }
 
-    &:focus-visible {
-      @include focus;
-    }
-
     &_short {
-      width: 100px;
+      max-width: 6em;
     }
   }
 
-  &__button {
-    margin: 0 $space-s $space-s 0;
+  // Вариант 19: даты начала и окончания аренды.
+  // Телефон — друг под другом, с 768px — в один ряд, каждое поле flex: 1
+  &__dates {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      flex-direction: row;
+      gap: $space-m;
+    }
   }
 
-  // Модификатор: подпись, поле и кнопка в одну строку
+  &__row_date {
+    flex: 1;
+  }
+
+  &__row_date &__input {
+    max-width: none;
+  }
+
+  // Модификатор: подпись, поле и кнопка в одну строку (Flexbox с переносом)
   &_inline {
     @include box;
+    padding: $space-m;
   }
 
-  &_inline &__label,
+  &_inline &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-s;
+    margin: 0;
+  }
+
+  &_inline &__label {
+    margin: 0;
+  }
+
   &_inline &__input {
-    display: inline-block;
     width: auto;
-    margin: 0 $space-s $space-s 0;
   }
 }

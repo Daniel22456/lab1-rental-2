@@ -67,15 +67,17 @@
     </form>
 
     <p class="page__text"><a class="button" href="{{ url_for('checkout') }}">Перейти к оформлению договора аренды</a></p>
+    {% else %}
+    <p class="page__text">Список аренды пуст. Выберите снаряжение в <a class="link" href="{{ url_for('catalog') }}">каталоге</a>.</p>
+    {% endif %}
+{% endblock %}
 
-    <aside class="page__section section section_note">
+{% block aside %}
+    <section class="page__section section section_note">
       <h2 class="section__title">Как рассчитывается стоимость</h2>
       <ul class="section__list">
         <li class="section__item">Стоимость аренды позиции = цена за сутки × срок аренды в днях.</li>
         <li class="section__item">Залог вносится один раз при получении и возвращается после сдачи снаряжения без повреждений.</li>
       </ul>
-    </aside>
-    {% else %}
-    <p class="page__text">Список аренды пуст. Выберите снаряжение в <a class="link" href="{{ url_for('catalog') }}">каталоге</a>.</p>
-    {% endif %}
+    </section>
 {% endblock %}

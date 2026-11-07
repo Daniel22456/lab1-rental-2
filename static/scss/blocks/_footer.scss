@@ -6,27 +6,51 @@
   color: #d8ddd9;
   background-color: $color-text;
 
+  // Мобильные: пункты подвала друг под другом
   &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: $space-m;
     max-width: $container;
     margin: 0 auto;
     padding: $space-l $space-m;
   }
 
-  &__text {
-    margin: 0 0 $space-s;
+  &__item {
+    margin: 0;
     font-style: normal;
   }
 
+  // Планшеты и ПК: пункты в ряд, копирайт отдельной строкой
+  @include tablet {
+    &__inner {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    &__item {
+      flex: 1 1 200px;
+
+      &_wide {
+        flex-basis: 100%;
+        padding-top: $space-m;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
   &__link {
+    // на тёмном фоне рамка фокуса белая
+    &:focus-visible {
+      outline-color: $color-surface;
+    }
+
     color: $color-surface;
     transition: color $transition;
 
     &:hover {
       color: $color-accent;
-    }
-
-    &:focus-visible {
-      @include focus;
     }
   }
 }

@@ -1,4 +1,4 @@
-// Главный файл стилей (ЛР2, вариант 19). Компиляция: npm run build:css
+// Главный файл стилей (ЛР3, вариант 19). Компиляция: npm run build:css
 @use "variables";
 @use "reset";
 
@@ -12,6 +12,7 @@
 @use "blocks/form";
 @use "blocks/table";
 @use "blocks/card";
+@use "blocks/catalog";
 @use "blocks/breadcrumbs";
 @use "blocks/total";
 @use "blocks/alert";

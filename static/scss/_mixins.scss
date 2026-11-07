@@ -13,3 +13,26 @@
   border: 1px solid $color-border;
   border-radius: $radius;
 }
+
+// Медиазапросы по подходу Mobile First
+@mixin tablet {
+  @media (min-width: $bp-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $bp-desktop) {
+    @content;
+  }
+}
+
+// Текст скрыт с экрана, но читается программами экранного доступа
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

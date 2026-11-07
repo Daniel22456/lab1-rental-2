@@ -8,13 +8,16 @@
   <title>{% block title %}{% endblock %} — прокат «Привал» | СДР</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="page">
-  <header class="header">
+{#- Макросетка (Grid): шапка, основное содержимое, боковая панель, подвал #}
+<body class="page{% if self.aside()|trim %} page_sidebar{% endif %}">
+  <a class="page__skip link" href="#main">Перейти к содержимому</a>
+
+  <header class="page__header header">
     <div class="header__inner">
-      <p class="header__brand">
-        <a class="header__logo-link" href="{{ url_for('index') }}"><img class="header__logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="Логотип проката «Привал»: оранжевая палатка у подножия гор в зелёном круге" width="64" height="64"></a>
-        <strong class="header__name">«Привал»</strong> — прокат туристического снаряжения
-      </p>
+      <a class="header__logo-link" href="{{ url_for('index') }}" aria-label="«Привал» — на главную страницу">
+        <img class="header__logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="" width="48" height="48">
+      </a>
+      <p class="header__brand"><strong class="header__name">«Привал»</strong> — прокат туристического снаряжения</p>
       <nav class="header__nav nav" aria-label="Основная навигация">
         <ul class="nav__list">
           {%- for endpoint, title in nav %}
@@ -25,7 +28,7 @@
     </div>
   </header>
 
-  <main class="page__main">
+  <main class="page__main" id="main" tabindex="-1">
     {%- with messages = get_flashed_messages() %}
     {%- for message in messages %}
     <p class="page__section alert" role="status"><strong>{{ message }}</strong></p>
@@ -34,15 +37,21 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="footer">
+  {%- if self.aside()|trim %}
+  <aside class="page__aside" aria-label="Дополнительная информация">
+    {%- block aside %}{% endblock %}
+  </aside>
+  {%- endif %}
+
+  <footer class="page__footer footer">
     <div class="footer__inner">
-      <address class="footer__text">
+      <address class="footer__item">
         Телефон: <a class="footer__link" href="tel:+73470000000">+7 (347) 000-00-00</a><br>
-        Электронная почта: <a class="footer__link" href="mailto:info@privaltour.example">info@privaltour.example</a>
+        Почта: <a class="footer__link" href="mailto:info@privaltour.example">info@privaltour.example</a>
       </address>
-      <p class="footer__text">Пункты проката работают ежедневно с 9:00 до 20:00.</p>
-      <p class="footer__text"><a class="footer__link" href="{{ url_for('credits') }}">Источники изображений</a></p>
-      <p class="footer__text"><small>© 2026 Прокат «Привал». Учебный проект. Разработчик: {{ author }} ({{ wm }}).</small></p>
+      <p class="footer__item">Пункты проката работают ежедневно с 9:00 до 20:00.</p>
+      <p class="footer__item"><a class="footer__link" href="{{ url_for('credits') }}">Источники изображений</a></p>
+      <p class="footer__item footer__item_wide"><small>© 2026 Прокат «Привал». Учебный проект. Разработчик: {{ author }} ({{ wm }}).</small></p>
     </div>
   </footer>
 </body>

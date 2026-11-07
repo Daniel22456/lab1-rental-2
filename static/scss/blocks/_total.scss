@@ -1,5 +1,4 @@
 @use "../variables" as *;
-@use "../mixins" as *;
 
 // Блок итогового расчёта; прилипание задаёт элемент page__total
 .total {
@@ -23,7 +22,7 @@
 
     &_accent {
       padding: 2px $space-s;
-      background-color: $color-accent;
+      background-color: $color-accent-dark;
       border-radius: 4px;
     }
   }
@@ -33,7 +32,7 @@
     color: $color-surface;
 
     &:focus-visible {
-      @include focus;
+      outline-color: $color-surface;
     }
   }
 }

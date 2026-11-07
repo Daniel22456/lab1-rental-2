@@ -1,21 +1,25 @@
 @use "../variables" as *;
-@use "../mixins" as *;
 
 .nav {
   &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-s;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  &__item {
-    display: inline-block;
-    margin: 0 $space-s $space-s 0;
-  }
-
   &__link {
-    display: inline-block;
-    padding: 6px 14px;
+    // на тёмном фоне рамка фокуса белая
+    &:focus-visible {
+      outline-color: $color-surface;
+    }
+
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 4px 14px;
     font-weight: bold;
     color: $color-surface;
     text-decoration: none;
@@ -25,10 +29,6 @@
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.15);
-    }
-
-    &:focus-visible {
-      @include focus;
     }
 
     &_active {
