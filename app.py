@@ -202,19 +202,10 @@ def index():
 
 @app.route("/catalog.html")
 def catalog():
+    # ЛР4: карточки строит JavaScript (static/js/main.js), сервер отдаёт только фильтр
     categories = query("SELECT id, name FROM category ORDER BY id")
     selected = request.args.get("category", type=int)
-    sql = """SELECT e.*, c.name AS category
-             FROM equipment e JOIN category c ON c.id = e.category_id"""
-    params = ()
-    if selected:
-        sql += " WHERE c.id = ?"
-        params = (selected,)
-    sql += " ORDER BY c.id, e.id"
-    groups = group_by_category(query(sql, params))
-    in_list = {r["equipment_id"] for r in query("SELECT equipment_id FROM rental_item")}
-    return render_template("catalog.html", categories=categories, selected=selected,
-                           groups=groups, in_list=in_list)
+    return render_template("catalog.html", categories=categories, selected=selected)
 
 
 @app.route("/detail.html")

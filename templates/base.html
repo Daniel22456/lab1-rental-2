@@ -7,6 +7,7 @@
   <meta name="description" content="{% block description %}Прокат туристического снаряжения «Привал»: палатки, рюкзаки, спальные мешки и походное оборудование в аренду{% endblock %}">
   <title>{% block title %}{% endblock %} — прокат «Привал» | СДР</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </head>
 {#- Макросетка (Grid): шапка, основное содержимое, боковая панель, подвал #}
 <body class="page{% if self.aside()|trim %} page_sidebar{% endif %}">
