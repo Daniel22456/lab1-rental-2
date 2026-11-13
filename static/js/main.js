@@ -156,10 +156,11 @@ const getSelectedCategory = () => {
 };
 
 // ------------------------------------------------------------ аналитика (вариант 19)
-// Итоговая стоимость аренды на 7 дней всех палаток с учётом залога
-const calcTentsRentCost = (items, days = 7) => {
+// Итоговая стоимость аренды всех позиций категории с учётом залога.
+// По заданию варианта — палатки на 7 дней, это значения по умолчанию.
+const calcRentCost = (items, category = "Палатки", days = 7) => {
   const rows = items
-    .filter((item) => item.category === "Палатки")
+    .filter((item) => item.category === category)
     .map((item) => ({
       "Наименование": item.name,
       "Аренда": item.pricePerDay * days,
@@ -167,33 +168,83 @@ const calcTentsRentCost = (items, days = 7) => {
       "Итого": item.getRentCost(days),
     }));
   const total = rows.reduce((sum, row) => sum + row["Итого"], 0);
-  return { days, rows, total };
+  return { category, days, rows, total };
 };
 
-const logTentsRentCost = ({ days, rows, total }) => {
-  console.log(`Аренда всех палаток на ${days} дней с учётом залога:`);
+const logRentCost = ({ category, days, rows, total }) => {
+  console.log(`Аренда категории «${category}» на ${days} дн. с учётом залога:`);
   console.table(rows);
   console.log(`Итоговая стоимость: ${formatMoney(total)}`);
 };
 
-// Тот же результат в боковой панели страницы
-const renderTentsRentCost = (target, { days, rows, total }) => {
+// Результат расчёта: список позиций и итог
+const renderRentCost = (target, { rows, total }) => {
   const el = Equipment.createElement;
-  const section = el("section", "page__section section section_note");
-  section.setAttribute("aria-labelledby", "tents-cost-title");
-  const title = el("h2", "section__title", `Все палатки на ${days} дней`);
-  title.setAttribute("id", "tents-cost-title");
-
   const list = el("ul", "section__list");
   rows.forEach((row) => {
     list.append(el("li", "section__item", `${row["Наименование"]}: ${formatMoney(row["Итого"])}`));
   });
-
   const result = el("p", "section__text");
   result.append("Итого с залогом: ", el("strong", "section__accent", formatMoney(total)));
+  target.replaceChildren(list, result);
+};
 
-  section.append(title, list, result);
+// Поле формы с подписью: <p class="form__row"><label>…</label><input|select></p>
+const createField = (control, id, labelText) => {
+  const el = Equipment.createElement;
+  const row = el("p", "form__row");
+  const label = el("label", "form__label", labelText);
+  label.setAttribute("for", id);
+  control.setAttribute("id", id);
+  row.append(label, control);
+  return row;
+};
+
+// Блок аналитики в боковой панели: выбор категории и срока, пересчёт при изменении
+const renderRentCalculator = (target, items) => {
+  const el = Equipment.createElement;
+  const section = el("section", "page__section section section_note");
+  section.setAttribute("aria-labelledby", "rent-cost-title");
+  const title = el("h2", "section__title", "Расчёт аренды с залогом");
+  title.setAttribute("id", "rent-cost-title");
+
+  const select = el("select", "form__input");
+  const categories = [...new Set(items.map((item) => item.category))];
+  categories.forEach((name) => select.append(new Option(name, name)));
+  select.value = "Палатки";
+
+  const daysInput = el("input", "form__input form__input_short");
+  daysInput.setAttribute("type", "number");
+  daysInput.setAttribute("min", "1");
+  daysInput.setAttribute("max", "30");
+  daysInput.value = "7";
+
+  const controls = el("div", "form");
+  controls.append(
+    createField(select, "rent-category", "Категория:"),
+    createField(daysInput, "rent-days", "Срок аренды, дней:"),
+  );
+
+  const output = el("div", "section__result");
+  output.setAttribute("aria-live", "polite"); // экранный диктор озвучит новый итог
+
+  const update = () => {
+    const days = Number(daysInput.value);
+    if (!Number.isInteger(days) || days < 1 || days > 30) {
+      output.replaceChildren(el("p", "section__text", "Укажите срок от 1 до 30 дней."));
+      return;
+    }
+    const report = calcRentCost(items, select.value, days);
+    logRentCost(report);
+    renderRentCost(output, report);
+  };
+
+  select.addEventListener("change", update);
+  daysInput.addEventListener("input", update);
+
+  section.append(title, controls, output);
   target.append(section);
+  update(); // первый расчёт: палатки на 7 дней
 };
 
 // ------------------------------------------------------------ запуск
@@ -208,11 +259,11 @@ const initCatalog = () => {
   const visible = category ? equipment.filter((item) => item.category === category) : equipment;
   renderCatalog(container, visible);
 
-  const report = calcTentsRentCost(equipment);
-  logTentsRentCost(report);
   const aside = document.querySelector(".page__aside");
   if (aside) {
-    renderTentsRentCost(aside, report);
+    renderRentCalculator(aside, equipment);
+  } else {
+    logRentCost(calcRentCost(equipment));
   }
 };
 
