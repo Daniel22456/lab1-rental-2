@@ -187,6 +187,12 @@ def image_src(name):
 
 # ------------------------------------------------------------ страницы сайта
 
+@app.route("/favicon.ico")
+def favicon():
+    # Значок вкладки: браузеры запрашивают /favicon.ico сами, без него в консоли ошибка 404
+    return redirect(url_for("static", filename="images/logo.svg"))
+
+
 @app.route("/")
 @app.route("/index.html")
 def index():
