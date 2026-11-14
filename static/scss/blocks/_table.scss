@@ -25,6 +25,7 @@
 
   &__cell_num {
     text-align: right;
+    white-space: nowrap; // сумма не разрывается на две строки
   }
 
   &__cell_group {
@@ -42,5 +43,15 @@
   &__foot {
     font-weight: bold;
     background-color: $color-bg;
+  }
+
+  // ЛР5: кнопки в строках корзины
+  &__counter {
+    flex-wrap: nowrap;
+  }
+
+  &__remove {
+    min-height: 36px;
+    padding: 4px 12px;
   }
 }

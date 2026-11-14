@@ -101,4 +101,11 @@
   &_inline &__input {
     width: auto;
   }
+
+  // Сообщение после отправки формы без перезагрузки страницы
+  &__status {
+    margin: $space-s 0 0;
+    font-weight: bold;
+    color: $color-primary-dark;
+  }
 }

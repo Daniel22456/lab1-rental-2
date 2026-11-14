@@ -3,73 +3,17 @@
 {% block content %}
     <h1 class="page__title">Список аренды — {{ wm }}</h1>
 
-    {% if summary.count %}
-    <p class="page__text">Отметьте одну или несколько позиций в таблице, чтобы изменить срок аренды или убрать их из списка.</p>
-    <form method="post" action="{{ url_for('collection_update') }}">
-      <div class="page__section page__table">
-        <table class="table">
-          <caption class="table__caption">Снаряжение, выбранное для аренды</caption>
-          <thead>
-            <tr>
-              <th class="table__head" scope="col" rowspan="2">Категория</th>
-              <th class="table__head" scope="col" rowspan="2">Наименование</th>
-              <th class="table__head" scope="col" rowspan="2">Срок аренды, дней</th>
-              <th class="table__head" scope="colgroup" colspan="2">Цена аренды, ₽</th>
-              <th class="table__head" scope="col" rowspan="2">Залоговая стоимость, ₽</th>
-            </tr>
-            <tr>
-              <th class="table__head" scope="col">за сутки</th>
-              <th class="table__head" scope="col">за весь срок</th>
-            </tr>
-          </thead>
-          {%- for group in groups %}
-          <tbody>
-            {%- for r in group.rows %}
-            <tr class="table__row">
-              {%- if loop.first %}
-              <th class="table__cell table__cell_group" scope="rowgroup" rowspan="{{ group.rows|length }}">{{ group.name }}</th>
-              {%- endif %}
-              <td class="table__cell"><input type="checkbox" id="item-{{ r.id }}" name="item_id" value="{{ r.id }}"> <label for="item-{{ r.id }}">{{ r.name }}</label></td>
-              <td class="table__cell table__cell_num">{{ r.days }}</td>
-              <td class="table__cell table__cell_num">{{ r.price_per_day|money }}</td>
-              <td class="table__cell table__cell_num">{{ r.cost|money }}</td>
-              <td class="table__cell table__cell_num">{{ r.deposit|money }}</td>
-            </tr>
-            {%- endfor %}
-          </tbody>
-          {%- endfor %}
-          <tfoot class="table__foot">
-            <tr>
-              <th class="table__cell table__cell_num" scope="row" colspan="4">Итого</th>
-              <td class="table__cell table__cell_num">{{ summary.rent|money }}</td>
-              <td class="table__cell table__cell_num">{{ summary.deposit|money }}</td>
-            </tr>
-            <tr>
-              <th class="table__cell table__cell_num" scope="row" colspan="4">Сумма к оплате при получении (аренда + залог)</th>
-              <td class="table__cell table__cell_num" colspan="2"><strong>{{ (summary.rent + summary.deposit)|money }}</strong></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+    {#- ЛР5: корзина и заявки читаются из localStorage и строятся скриптом #}
+    <section class="page__section" aria-labelledby="cart-title">
+      <h2 class="page__subtitle" id="cart-title">Корзина</h2>
+      <div id="cart-container"></div>
+    </section>
 
-      <fieldset class="page__section form form_inline">
-        <legend class="form__legend">Действия с отмеченными позициями</legend>
-        <p class="form__row">
-          <label class="form__label" for="new-days">Новый срок аренды, дней:</label>
-          <input class="form__input form__input_short" type="number" id="new-days" name="days" min="1" max="30" value="5">
-          <button class="form__button button" type="submit" name="action" value="set_days">Изменить срок</button>
-        </p>
-        <p class="form__row">
-          <button class="form__button button button_secondary" type="submit" name="action" value="remove" formnovalidate>Убрать отмеченные из списка</button>
-          <button class="form__button button button_secondary" type="submit" name="action" value="clear" formnovalidate>Очистить весь список</button>
-        </p>
-      </fieldset>
-    </form>
-
-    <p class="page__text"><a class="button" href="{{ url_for('checkout') }}">Перейти к оформлению договора аренды</a></p>
-    {% else %}
-    <p class="page__text">Список аренды пуст. Выберите снаряжение в <a class="link" href="{{ url_for('catalog') }}">каталоге</a>.</p>
-    {% endif %}
+    <section class="page__section" aria-labelledby="orders-title">
+      <h2 class="page__subtitle" id="orders-title">Мои заявки</h2>
+      <div id="orders-container"></div>
+    </section>
+    <noscript><p class="page__text">Для работы корзины включите JavaScript.</p></noscript>
 {% endblock %}
 
 {% block aside %}
@@ -77,6 +21,7 @@
       <h2 class="section__title">Как рассчитывается стоимость</h2>
       <ul class="section__list">
         <li class="section__item">Стоимость аренды позиции = цена за сутки × срок аренды в днях.</li>
+        <li class="section__item">Срок аренды каждой позиции меняется кнопками «−» и «+» в каталоге или в корзине.</li>
         <li class="section__item">Залог вносится один раз при получении и возвращается после сдачи снаряжения без повреждений.</li>
       </ul>
     </section>

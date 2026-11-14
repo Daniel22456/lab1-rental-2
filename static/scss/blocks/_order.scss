@@ -1,0 +1,37 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// ЛР5: список заявок из localStorage
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: $space-m;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order {
+  @include box;
+  padding: $space-m;
+
+  &__title {
+    margin: 0 0 $space-s;
+    font-family: $font-heading;
+    font-size: 18px;
+  }
+
+  &__text,
+  &__total {
+    margin: 0 0 $space-s;
+  }
+
+  &__list {
+    margin: 0 0 $space-s;
+    padding-left: 20px;
+  }
+
+  &__total {
+    color: $color-accent-dark;
+  }
+}

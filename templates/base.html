@@ -23,7 +23,7 @@
       <nav class="header__nav nav" aria-label="Основная навигация">
         <ul class="nav__list">
           {%- for endpoint, title in nav %}
-          <li class="nav__item"><a class="nav__link{% if request.endpoint == endpoint %} nav__link_active{% endif %}" href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} aria-current="page"{% endif %}>{{ title }}{% if endpoint == 'collection' %} ({{ rental_count }}){% endif %}</a></li>
+          <li class="nav__item"><a class="nav__link{% if request.endpoint == endpoint %} nav__link_active{% endif %}" href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} aria-current="page"{% endif %}>{{ title }}{% if endpoint == 'collection' %} (<span class="nav__count" data-cart-count>0</span>){% endif %}</a></li>
           {%- endfor %}
         </ul>
       </nav>

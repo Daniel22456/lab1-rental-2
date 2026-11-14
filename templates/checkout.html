@@ -3,15 +3,12 @@
 {% block content %}
     <h1 class="page__title">Оформление договора аренды — {{ wm }}</h1>
 
-    <section class="page__total total">
+    {#- ЛР5: расчёт строится скриптом по корзине из localStorage #}
+    <section class="page__total total" id="checkout-summary" aria-live="polite">
       <h2 class="total__title">Итоговый расчёт аренды</h2>
-      {% if summary.count %}
-      <p class="total__text">Позиций: {{ summary.count }}. Аренда: <strong class="total__value">{{ summary.rent|money }} ₽</strong>, залог: <strong class="total__value">{{ summary.deposit|money }} ₽</strong>.</p>
-      <p class="total__text">К оплате при получении: <strong class="total__value total__value_accent">{{ (summary.rent + summary.deposit)|money }} ₽</strong> <a class="total__link" href="{{ url_for('collection') }}">Изменить список аренды</a></p>
-      {% else %}
-      <p class="total__text">Список аренды пуст. Перед оформлением договора выберите снаряжение в <a class="total__link" href="{{ url_for('catalog') }}">каталоге</a>.</p>
-      {% endif %}
     </section>
+
+    <div class="page__section" id="order-result" tabindex="-1"></div>
 
     <section class="page__section section" id="damage-terms">
       <h2 class="section__title">Условия возмещения ущерба</h2>
@@ -34,7 +31,7 @@
     </section>
     {% endif %}
 
-    <form class="page__section form" method="post" action="{{ url_for('checkout') }}">
+    <form class="page__section form" id="rental-form">
       <fieldset class="form__fieldset">
         <legend class="form__legend">Сведения об арендаторе</legend>
         <p class="form__row">
@@ -155,7 +152,7 @@
       </fieldset>
 
       <p class="form__row">
-        <button class="form__button button" type="submit"{% if not summary.count %} disabled{% endif %}>Оформить договор</button>
+        <button class="form__button button" type="submit">Отправить заявку</button>
         <button class="form__button button button_secondary" type="reset">Очистить форму</button>
       </p>
     </form>

@@ -106,19 +106,25 @@
     font-size: 20px;
   }
 
-  &__pick {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: bold;
-    cursor: pointer;
+  // ЛР5: расчёт за выбранный срок и кнопка корзины на всю ширину карточки
+  &__cost {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 15px;
   }
 
-  &__checkbox {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-    accent-color: $color-accent;
+  &__cost-value {
+    font-size: 18px;
+  }
+
+  &__cart {
+    flex-basis: 100%;
+  }
+
+  // Позиция в корзине
+  &_in-cart {
+    border-color: $color-accent-dark;
+    box-shadow: 0 0 0 2px $color-accent-dark;
   }
 
   &__hidden {

@@ -16,21 +16,10 @@
       </p>
     </form>
 
-    <p class="page__text">Отметьте одну или несколько позиций, укажите срок аренды внизу страницы и нажмите «Добавить в список аренды».</p>
-    <form method="post" action="{{ url_for('collection_add') }}">
-      {#- ЛР4: карточки создаёт static/js/main.js (класс Equipment) #}
-      <ul class="page__section catalog" id="catalog-container" aria-label="Снаряжение в каталоге"></ul>
-      <noscript><p class="page__text">Для показа каталога включите JavaScript.</p></noscript>
-
-      <fieldset class="page__section form form_inline">
-        <legend class="form__legend">Добавить отмеченное снаряжение в список аренды</legend>
-        <p class="form__row">
-          <label class="form__label" for="days">Срок аренды, дней:</label>
-          <input class="form__input form__input_short" type="number" id="days" name="days" min="1" max="30" value="3" required>
-          <button class="form__button button" type="submit">Добавить в список аренды</button>
-        </p>
-      </fieldset>
-    </form>
+    <p class="page__text">Кнопками «−» и «+» выберите срок аренды, стоимость пересчитается сразу. Выбранный срок и корзина сохраняются в браузере.</p>
+    {#- ЛР4: карточки создаёт static/js/main.js; ЛР5: клики обрабатывает один обработчик на контейнере #}
+    <ul class="page__section catalog" id="catalog-container" aria-label="Снаряжение в каталоге"></ul>
+    <noscript><p class="page__text">Для показа каталога включите JavaScript.</p></noscript>
 {% endblock %}
 
 {% block aside %}

@@ -49,16 +49,13 @@
 
       <section class="section__part">
         <h2 class="section__title">Добавить в список аренды</h2>
-        {% if in_list %}
-        <p class="section__text">Это снаряжение уже есть в списке аренды на {{ in_list.days }} {{ in_list.days|plural('день', 'дня', 'дней') }}. Новый срок заменит прежний.</p>
-        {% endif %}
-        <form class="form form_inline" method="post" action="{{ url_for('collection_add') }}">
-          <input type="hidden" name="equipment_id" value="{{ item.id }}">
+        <form class="form form_inline" id="detail-cart-form" data-id="{{ item.id }}">
           <p class="form__row">
             <label class="form__label" for="detail-days">Срок аренды, дней:</label>
-            <input class="form__input form__input_short" type="number" id="detail-days" name="days" min="1" max="30" value="{{ in_list.days if in_list else 3 }}" required>
-            <button class="form__button button" type="submit">Добавить в список аренды</button>
+            <input class="form__input form__input_short" type="number" id="detail-days" name="days" min="1" max="30" value="1" required>
+            <button class="form__button button" type="submit">Добавить в корзину</button>
           </p>
+          <p class="form__status" role="status"></p>
         </form>
       </section>
     </article>

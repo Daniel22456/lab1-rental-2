@@ -449,6 +449,11 @@ input[type=time]:focus-within {
 .form_inline .form__input {
   width: auto;
 }
+.form__status {
+  margin: 8px 0 0;
+  font-weight: bold;
+  color: #1f5a37;
+}
 
 .table {
   width: 100%;
@@ -471,6 +476,7 @@ input[type=time]:focus-within {
 }
 .table__cell_num {
   text-align: right;
+  white-space: nowrap;
 }
 .table__cell_group {
   background-color: #e3efe6;
@@ -484,6 +490,13 @@ input[type=time]:focus-within {
 .table__foot {
   font-weight: bold;
   background-color: #f5f2ea;
+}
+.table__counter {
+  flex-wrap: nowrap;
+}
+.table__remove {
+  min-height: 36px;
+  padding: 4px 12px;
 }
 
 .card {
@@ -569,18 +582,20 @@ input[type=time]:focus-within {
 .card__price-value {
   font-size: 20px;
 }
-.card__pick {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.card__checkbox {
-  width: 20px;
-  height: 20px;
+.card__cost {
+  flex-basis: 100%;
   margin: 0;
-  accent-color: #e07b2a;
+  font-size: 15px;
+}
+.card__cost-value {
+  font-size: 18px;
+}
+.card__cart {
+  flex-basis: 100%;
+}
+.card_in-cart {
+  border-color: #a0500f;
+  box-shadow: 0 0 0 2px #a0500f;
 }
 .card__hidden {
   position: absolute;
@@ -663,4 +678,72 @@ input[type=time]:focus-within {
   color: #b3261e;
   background-color: #fbe9e7;
   border-left-color: #b3261e;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.counter__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font: inherit;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f5a37;
+  background-color: #ffffff;
+  border: 2px solid #276a42;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.counter__button:hover:not(:disabled) {
+  color: #ffffff;
+  background-color: #276a42;
+}
+.counter__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.counter__value {
+  min-width: 4.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order {
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid #ddd6c6;
+  border-radius: 8px;
+  padding: 16px;
+}
+.order__title {
+  margin: 0 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+}
+.order__text, .order__total {
+  margin: 0 0 8px;
+}
+.order__list {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+.order__total {
+  color: #a0500f;
 }
