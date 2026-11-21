@@ -1,63 +1,52 @@
 # Прокат туристического снаряжения «Привал» (СДР)
 
-Лабораторная работа №1 «Основы HTML», вариант 19.
+Учебный проект по дисциплине «Web-программирование», вариант 19.
 Автор: Саяхов Даниэль, группа ИВТ-ПО-302Б.
 
-Страницы сайта — HTML-шаблоны без CSS и JavaScript. Данные (снаряжение, список аренды,
-договоры) хранятся в базе SQLite, к которой подключается сервер на Python (Flask).
+ЛР6 «Асинхронный JavaScript, Fetch API и модульная сборка проекта»: проект собирается Vite,
+данные загружаются с мок-сервера json-server (файл `db.json`) через Fetch API.
+
+- **GET** — база доступного инвентаря (`/equipment`), категории и пункты проката при открытии страниц.
+- **POST** — оформление договора аренды оборудования с указанием сроков (`/contracts`).
+- Корзина и выбранные сроки аренды каждой позиции хранятся в `localStorage` браузера.
+
+## Запуск
+
+```
+npm install
+npm run server      # мок-сервер json-server: http://localhost:3000
+npm run dev         # в другом окне терминала, сервер разработки Vite: http://localhost:5173
+```
+
+Сборка: `npm run build` (результат — папка `dist`), просмотр сборки: `npm run preview`.
 
 ## Страницы
 
-| Адрес | Назначение |
-|---|---|
-| `/index.html` | Главная: описание сервиса и навигация |
-| `/catalog.html` | Каталог снаряжения, выбор нескольких позиций сразу |
-| `/detail.html?id=1` | Подробная страница снаряжения |
-| `/collection.html` | Список аренды: таблица с `thead`, `tbody`, `tfoot`, `colspan`, `rowspan` |
-| `/checkout.html` | Форма оформления договора аренды |
-| `/contract.html?id=1` | Оформленный договор |
-| `/admin.html` | Управление базой данных: добавление, изменение, удаление записей |
-| `/credits.html` | Источники изображений: авторы и лицензии фотографий |
-
-## Запуск на macOS
-
-```
-pip3 install -r requirements.txt
-python3 download_photos.py
-python3 app.py
-```
-
-Открыть в браузере: http://127.0.0.1:5000
-Если порт 5000 занят (AirPlay): `python3 -m flask --app app run --port 5001` и адрес http://127.0.0.1:5001
-
-## Запуск на Windows
-
-```
-pip install -r requirements.txt
-python download_photos.py
-python app.py
-```
-
-## Фотографии
-
-Фото палатки «Ветер-3», рюкзака «Штурм 50», спального мешка, горелки и бутыли
-уже лежат в `static/images/`. Для остальных позиций `download_photos.py` один раз
-скачивает фотографии с Wikimedia Commons (свободные лицензии) и записывает авторов
-и лицензии в `static/images/credits.json`. Пока фото не скачаны, сайт показывает рисунки SVG.
-
-## База данных
-
-Файл `rental.db` создаётся автоматически при первом запуске из `schema.sql` и `seed.sql`.
-Вернуть базу к начальным данным: `python3 app.py --reset`
-(после сброса снова выполнить `python3 download_photos.py` не нужно — фото уже на месте).
+| Адрес | Назначение | Запросы |
+|---|---|---|
+| `/index.html` | Главная | GET `/equipment`, `/categories` |
+| `/catalog.html` | Каталог, фильтр по категории, срок «−/+», корзина | GET `/equipment`, `/categories` |
+| `/detail.html?id=1` | Подробная страница снаряжения | GET `/equipment/:id`, `/equipment?categoryId=` |
+| `/collection.html` | Корзина и оформленные договоры | GET `/equipment`, `/contracts` |
+| `/checkout.html` | Форма договора аренды | GET `/equipment`, `/pickupPoints`; POST `/contracts` |
+| `/credits.html` | Источники изображений | — |
 
 ## Структура проекта
 
 ```
-app.py               сервер Flask: маршруты, работа с базой
-download_photos.py   загрузка фотографий с Wikimedia Commons
-schema.sql           структура базы данных (таблицы)
-seed.sql             начальные данные
-templates/           HTML-шаблоны страниц
-static/images/       рисунки (SVG) и фотографии снаряжения
+index.html … credits.html   страницы (многостраничный режим Vite)
+vite.config.js              конфигурация сборки, build.rollupOptions.input
+db.json                     данные мок-сервера: equipment, categories, pickupPoints, contracts
+public/images/              рисунки и фотографии снаряжения
+src/main.js                 точка входа: стили и запуск кода страницы
+src/api.js                  сетевые запросы (fetch, async/await, обработка ошибок)
+src/ui.js                   работа с DOM: лоадер, скелетон, сообщения, делегирование
+src/storage.js              localStorage: корзина и сроки аренды
+src/equipment.js            класс Equipment и расчёты аренды
+src/cart.js                 связь каталога с сервера и корзины
+src/format.js               форматирование сумм и дат
+src/pages/                  код отдельных страниц
+src/scss/                   стили SCSS (БЭМ)
 ```
+
+Версия проекта на Flask + SQLite (ЛР1–ЛР5) сохранена в истории Git, ветки `feature/lab1` – `feature/lab5`.
