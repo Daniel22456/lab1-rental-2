@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Саяхов Даниэль, ИВТ-ПО-302Б">
+  <meta name="description" content="Прокат туристического снаряжения «Привал»: палатки, рюкзаки, спальные мешки и походное оборудование в аренду">
+  <title>Список аренды — прокат «Привал» | СДР</title>
+  <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body class="page page_sidebar" data-page="collection">
+  <a class="page__skip link" href="#main">Перейти к содержимому</a>
+
+  <header class="page__header header">
+    <div class="header__inner">
+      <a class="header__logo-link" href="/index.html" aria-label="«Привал» — на главную страницу">
+        <img class="header__logo" src="/images/logo.svg" alt="" width="48" height="48">
+      </a>
+      <p class="header__brand"><strong class="header__name">«Привал»</strong> — прокат туристического снаряжения</p>
+      <nav class="header__nav nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li class="nav__item"><a class="nav__link" href="/index.html">Главная</a></li>
+          <li class="nav__item"><a class="nav__link" href="/catalog.html">Каталог</a></li>
+          <li class="nav__item"><a class="nav__link nav__link_active" href="/collection.html" aria-current="page">Список аренды (<span class="nav__count" data-cart-count>0</span>)</a></li>
+          <li class="nav__item"><a class="nav__link" href="/checkout.html">Оформление договора</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page__main" id="main" tabindex="-1">
+
+    <h1 class="page__title">Список аренды — <abbr title="Саяхов Даниэль, ИВТ-ПО-302Б">СДР</abbr></h1>
+
+    <section class="page__section" aria-labelledby="cart-title">
+      <h2 class="page__subtitle" id="cart-title">Корзина</h2>
+      <div id="cart-container"></div>
+    </section>
+
+    <section class="page__section" aria-labelledby="contracts-title">
+      <h2 class="page__subtitle" id="contracts-title">Оформленные договоры</h2>
+      <div id="contracts-container"></div>
+    </section>
+    <noscript><p class="page__text">Для загрузки данных с сервера включите JavaScript.</p></noscript>
+  </main>
+
+  <aside class="page__aside" aria-label="Дополнительная информация">
+
+    <section class="page__section section section_note">
+      <h2 class="section__title">Как рассчитывается стоимость</h2>
+      <ul class="section__list">
+        <li class="section__item">Стоимость аренды позиции = цена за сутки × срок аренды в днях.</li>
+        <li class="section__item">Срок аренды каждой позиции меняется кнопками «−» и «+» в каталоге или в корзине.</li>
+        <li class="section__item">Залог вносится один раз при получении и возвращается после сдачи снаряжения без повреждений.</li>
+      </ul>
+    </section>
+  </aside>
+
+  <footer class="page__footer footer">
+    <div class="footer__inner">
+      <address class="footer__item">
+        Телефон: <a class="footer__link" href="tel:+73470000000">+7 (347) 000-00-00</a><br>
+        Почта: <a class="footer__link" href="mailto:info@privaltour.example">info@privaltour.example</a>
+      </address>
+      <p class="footer__item">Пункты проката работают ежедневно с 9:00 до 20:00.</p>
+      <p class="footer__item"><a class="footer__link" href="/credits.html">Источники изображений</a></p>
+      <p class="footer__item footer__item_wide"><small>© 2026 Прокат «Привал». Учебный проект. Разработчик: Саяхов Даниэль, ИВТ-ПО-302Б (<abbr title="Саяхов Даниэль, ИВТ-ПО-302Б">СДР</abbr>).</small></p>
+    </div>
+  </footer>
+</body>
+</html>

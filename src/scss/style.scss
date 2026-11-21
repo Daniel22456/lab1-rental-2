@@ -1,4 +1,4 @@
-// Главный файл стилей (ЛР5, вариант 19). Компиляция: npm run build:css
+// Главный файл стилей (ЛР6, вариант 19). Подключается в src/main.js, компилирует Vite (пакет sass)
 @use "variables";
 @use "reset";
 
@@ -18,3 +18,4 @@
 @use "blocks/alert";
 @use "blocks/counter";
 @use "blocks/order";
+@use "blocks/loader";

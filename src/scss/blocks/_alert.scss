@@ -21,3 +21,12 @@
     border-left-color: $color-error;
   }
 }
+
+// ЛР6: кнопка «Повторить» в сообщении об ошибке загрузки
+.alert__text {
+  margin: 0 0 $space-s;
+}
+
+.alert__retry {
+  margin-top: $space-s;
+}

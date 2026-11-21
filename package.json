@@ -1,12 +1,17 @@
 {
   "name": "lab1-rental-2",
-  "version": "2.0.0",
+  "version": "6.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build:css": "sass static/scss/style.scss static/css/style.css --no-source-map",
-    "watch:css": "sass --watch static/scss/style.scss:static/css/style.css --no-source-map"
+    "dev": "vite",
+    "server": "json-server --watch db.json --port 3000",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "sass": "^1.83.4"
+    "json-server": "^1.0.0-beta.15",
+    "sass": "^1.108.2",
+    "vite": "^8.3.8"
   }
 }
