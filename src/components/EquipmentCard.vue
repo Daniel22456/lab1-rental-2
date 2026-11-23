@@ -46,8 +46,8 @@ defineProps({
 </script>
 
 <template>
-  <!-- :class добавляет полупрозрачный модификатор, если снаряжения нет на складе -->
   <article class="equipment-card" :class="{ 'equipment-card_rented': !inStock }">
+    <!-- :class выше добавляет полупрозрачный модификатор, если снаряжения нет на складе -->
     <div class="equipment-card__media">
       <img
         class="equipment-card__image"
