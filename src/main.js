@@ -1,21 +1,7 @@
-// Точка входа (ЛР6, вариант 19, прокат снаряжения «Привал», СДР).
-// Подключает стили и запускает код нужной страницы по атрибуту <body data-page="…">.
-import "./scss/style.scss";
-import { initCatalog } from "./pages/catalog.js";
-import { initCheckout } from "./pages/checkout.js";
-import { initCollection } from "./pages/collection.js";
-import { initDetail } from "./pages/detail.js";
-import { initHome } from "./pages/home.js";
-import { getCart } from "./storage.js";
-import { updateCartCount } from "./ui.js";
+// Точка входа Vue-приложения (ЛР7, вариант 19, СДР)
+import { createApp } from "vue";
+import App from "./App.vue";
+import "./assets/scss/main.scss";
 
-const pages = {
-  home: initHome,
-  catalog: initCatalog,
-  detail: initDetail,
-  collection: initCollection,
-  checkout: initCheckout,
-};
-
-updateCartCount(getCart().length);
-pages[document.body.dataset.page]?.();
+// Создаём приложение с корневым компонентом App и монтируем его в <div id="app">
+createApp(App).mount("#app");

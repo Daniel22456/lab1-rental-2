@@ -1,17 +1,20 @@
 {
   "name": "lab1-rental-2",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "server": "json-server --watch db.json --port 3000",
     "build": "vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "vue": "^3.5.46"
+  },
   "devDependencies": {
-    "json-server": "^1.0.0-beta.15",
+    "@vitejs/plugin-vue": "^6.0.11",
     "sass": "^1.108.2",
-    "vite": "^8.3.8"
+    "vite": "^8.3.8",
+    "vite-plugin-vue-devtools": "^8.2.1"
   }
 }

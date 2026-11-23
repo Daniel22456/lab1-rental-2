@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use "variables" as *;
+@use "mixins" as *;
 
 // Макросетка страницы (Grid). Mobile First: все области в одну колонку
 .page {
