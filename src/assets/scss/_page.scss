@@ -123,4 +123,23 @@
     z-index: 10;
     margin: 0 0 $space-l;
   }
+
+  // ЛР8: сообщение о принятой заявке
+  &__notice {
+    margin: 0 0 $space-l;
+    padding: $space-m $space-l;
+    background-color: #e3efe6;
+    border-left: 6px solid $color-primary;
+    border-radius: $radius;
+  }
+
+  &__notice-title {
+    margin: 0 0 $space-s;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__notice-text {
+    margin: 0;
+  }
 }

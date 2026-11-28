@@ -1,5 +1,7 @@
 <!-- Шапка сайта: логотип, название и навигационное меню (пункты меню приходят через props) -->
 <script setup>
+import { formatMoney, formatNumber } from "../utils/format.js";
+
 defineProps({
   // Пункты меню: [{ href: "#catalog", text: "Каталог", active: true }, …]
   navItems: {
@@ -9,6 +11,11 @@ defineProps({
   logoUrl: {
     type: String,
     default: "/images/logo.svg",
+  },
+  // ЛР8: итоги списка аренды (computed в App.vue): { count, rent, deposit, weight }
+  rentalTotals: {
+    type: Object,
+    required: true,
   },
 });
 </script>
@@ -22,6 +29,14 @@ defineProps({
       <p class="header__brand">
         <strong class="header__name">«Привал»</strong> — прокат туристического снаряжения
       </p>
+      <!-- ЛР8: итоги списка аренды обновляются реактивно -->
+      <a class="header__rental" href="#rental">
+        <template v-if="rentalTotals.count > 0">
+          Список аренды: {{ rentalTotals.count }} поз. · {{ formatMoney(rentalTotals.rent) }}
+          · залог {{ formatMoney(rentalTotals.deposit) }} · {{ formatNumber(rentalTotals.weight) }} кг
+        </template>
+        <template v-else>Список аренды пуст</template>
+      </a>
       <nav class="header__nav nav" aria-label="Основная навигация">
         <ul class="nav__list">
           <li v-for="item in navItems" :key="item.href" class="nav__item">
@@ -86,6 +101,25 @@ defineProps({
     display: block;
     font-family: $font-heading;
     font-size: 22px;
+  }
+
+  &__rental {
+    flex-basis: 100%;
+    padding: 4px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: $color-surface;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: $radius;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:focus-visible {
+      outline-color: $color-surface;
+    }
   }
 
   &__nav {

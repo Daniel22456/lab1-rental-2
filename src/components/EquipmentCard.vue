@@ -1,11 +1,15 @@
-<!-- Карточка снаряжения (вариант 19). Все данные приходят от родителя через props -->
+<!-- Карточка снаряжения (вариант 19). Данные приходят через props, действия уходят родителю событиями (defineEmits) -->
 <script setup>
-import { formatMoney, formatNumber } from "../utils/format.js";
+import { formatDays, formatMoney, formatNumber } from "../utils/format.js";
 import BaseBadge from "./BaseBadge.vue";
 import BaseButton from "./BaseButton.vue";
 
 // Входные параметры варианта 19 и параметры изображения
-defineProps({
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -42,11 +46,29 @@ defineProps({
     type: Array,
     default: () => [],
   },
+  // ЛР8: срок аренды в списке аренды; 0 — позиции в списке нет
+  rentalDays: {
+    type: Number,
+    default: 0,
+  },
 });
+
+// ЛР8, вариант 19: события карточки с проверкой передаваемых данных
+const emit = defineEmits({
+  "add-rental": (id) => Number.isInteger(id),
+  "change-days": ({ id, days }) => Number.isInteger(id) && Number.isInteger(days),
+});
+
+const MIN_DAYS = 1;
+const MAX_DAYS = 30;
+
+const changeDays = (step) => {
+  emit("change-days", { id: props.id, days: props.rentalDays + step });
+};
 </script>
 
 <template>
-  <article class="equipment-card" :class="{ 'equipment-card_rented': !inStock }">
+  <article class="equipment-card" :class="{ 'equipment-card_rented': !inStock, 'equipment-card_selected': rentalDays > 0 }">
     <!-- :class выше добавляет полупрозрачный модификатор, если снаряжения нет на складе -->
     <div class="equipment-card__media">
       <img
@@ -75,10 +97,41 @@ defineProps({
         <p class="equipment-card__price">
           <strong class="equipment-card__price-value">{{ formatMoney(dailyRate) }}</strong> / сутки
         </p>
-        <!-- Кнопка выбора блокируется, если снаряжения нет на складе -->
-        <BaseButton size="s" :disabled="!inStock" :aria-label="`Выбрать: ${title}`">
-          {{ inStock ? "Выбрать" : "Нет в наличии" }}
+
+        <!-- Позиции нет в списке аренды: кнопка добавления (блокируется, если нет на складе) -->
+        <BaseButton
+          v-if="rentalDays === 0"
+          size="s"
+          :disabled="!inStock"
+          :aria-label="`В список аренды: ${title}`"
+          @click="emit('add-rental', id)"
+        >
+          {{ inStock ? "В список аренды" : "Нет в наличии" }}
         </BaseButton>
+
+        <!-- Позиция в списке: выбор срока аренды кнопками «−» и «+» -->
+        <div v-else class="equipment-card__rental">
+          <div class="equipment-card__counter" role="group" :aria-label="`Срок аренды: ${title}`">
+            <button
+              class="equipment-card__step"
+              type="button"
+              aria-label="Уменьшить срок на 1 день"
+              :disabled="rentalDays <= MIN_DAYS"
+              @click="changeDays(-1)"
+            >−</button>
+            <output class="equipment-card__days">{{ formatDays(rentalDays) }}</output>
+            <button
+              class="equipment-card__step"
+              type="button"
+              aria-label="Увеличить срок на 1 день"
+              :disabled="rentalDays >= MAX_DAYS"
+              @click="changeDays(1)"
+            >+</button>
+          </div>
+          <p class="equipment-card__cost">
+            В списке аренды: <strong>{{ formatMoney(dailyRate * rentalDays) }}</strong>
+          </p>
+        </div>
       </div>
     </div>
   </article>
@@ -110,6 +163,12 @@ defineProps({
       transform: none;
       box-shadow: none;
     }
+  }
+
+  // ЛР8: позиция добавлена в список аренды
+  &_selected {
+    border-color: $color-accent-dark;
+    box-shadow: 0 0 0 2px $color-accent-dark;
   }
 
   &__media {
@@ -188,6 +247,61 @@ defineProps({
 
   &__price-value {
     font-size: 20px;
+  }
+
+  // ЛР8: срок аренды позиции из списка аренды
+  &__rental {
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-s;
+  }
+
+  &__counter {
+    display: flex;
+    align-items: center;
+    gap: $space-s;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    font: inherit;
+    font-size: 20px;
+    font-weight: bold;
+    color: $color-primary-dark;
+    background-color: $color-surface;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color $transition, color $transition;
+
+    &:hover:not(:disabled) {
+      color: $color-surface;
+      background-color: $color-primary;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+  }
+
+  &__days {
+    min-width: 4.5em;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__cost {
+    margin: 0;
+    font-size: 14px;
   }
 }
 </style>
